@@ -1,0 +1,61 @@
+{
+  "name": "rob",
+  "scopeName": "source.rob",
+  "fileTypes": [
+    ".rob"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.rob",
+      "match": "\\b(ARRIERE|AVANT|Addition|And|Assignation|BinaryExpression|Block|Boolean|CM|Clock|ConstantBoolean|ConstantInt|DROITE|Deplacement|DistanceCaptor|GAUCHE|Greater|If|IntegerValue|Lower|MM|Multiplication|Number|Or|ProcCall|ProcDeclaration|Repeat|Soustraction|Speed|ValCall|VarDeclaration|Void|While|arguments|block|condition|deplacement_value|else|expression|fun|left|mouvement|operator|procdeclaration|returnedType|right|statements|then|time|type|unite|valcall|value|vardeclaration)\\b"
+    },
+    {
+      "name": "string.quoted.double.rob",
+      "begin": "\"",
+      "end": "'",
+      "patterns": [
+        {
+          "include": "#string-character-escape"
+        }
+      ]
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.rob",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.rob"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.rob"
+            }
+          }
+        },
+        {
+          "begin": "//\n\r",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.whitespace.comment.leading.rob"
+            }
+          },
+          "end": "(?=$)",
+          "name": "comment.line.rob"
+        }
+      ]
+    },
+    "string-character-escape": {
+      "name": "constant.character.escape.rob",
+      "match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+    }
+  }
+}

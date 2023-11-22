@@ -1,0 +1,15 @@
+{
+    "projectName": "Rob",
+    "languages": [{
+        "id": "rob",
+        "grammar": "src/language/rob.langium",
+        "fileExtensions": [".rob"],
+        "textMate": {
+            "out": "syntaxes/rob.tmLanguage.json"
+        },
+        "monarch": {
+            "out": "syntaxes/rob.monarch.ts"
+        }
+    }],
+    "out": "src/language/generated"
+}

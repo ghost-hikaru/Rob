@@ -1,0 +1,1 @@
+{"version":3,"file":"jschardet-deeb5be8.js","sources":["../../node_modules/vscode/override/jschardet.js"],"sourcesContent":["const detect = () => {\n    return {\n        encoding: 'utf8',\n        confidence: 1\n    };\n};\nexport { detect };\n"],"names":["detect"],"mappings":"AAAK,MAACA,IAAS,OACJ;AAAA,EACH,UAAU;AAAA,EACV,YAAY;AACpB;","x_google_ignoreList":[0]}
