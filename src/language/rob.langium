@@ -7,7 +7,7 @@ entry Robot returns Robot:
 ;
 
 Statement returns Statement:
-    Block | If | While | Repeat | Clock | Deplacement | Speed | VarDeclaration | Assignation 
+    (Block | If | While | Repeat | Clock | Deplacement | Speed | ProcCall | VarDeclaration | Assignation) ';'
 ;
 
 Expression returns Expression:
@@ -23,11 +23,11 @@ ExpressionType returns ExpressionType:
 ;
 
 ProcDeclaration returns ProcDeclaration:
-    'ProcDeclaration' name=EString  '{' 'returnedType' returnedType=Types  ('block' block=Block  )? '}'  
+    returnedType=Types name=EString (block=Block)? 
 ;
 
 Block returns Block:
-    {Block} 'Block' '{' ('statements' '{' statements+=Statement  ("," statements+=Statement  )* '}' )? '}'  
+    ('{'(statements+=Statement  ( statements+=Statement  )*)? '}')?
 ;
 
 EString returns string:
@@ -42,59 +42,59 @@ Types_Void returns Types_Void: 'Void' ;
 Types_Boolean returns Types_Boolean: 'Boolean' ;
 
 If returns If:
-    'If' '{' ('condition' condition=Expression  )? ('else' else=Block  )? 'then' then=Block  '}'  
+    'If' '('(condition=Expression)')' '{' 'then' then=Block ('else' else=Block)? '}'  
 ;
 
 While returns While:
-    'While' '{' ('condition' condition=Expression  )? 'block' block=Block  '}'  
+    'While' '('(condition=Expression) ')' block=Block
 ;
 
 Repeat returns Repeat:
-    'Repeat' '{' ('condition' condition=Expression  )? 'block' block=Block  '}'  
+    'Repeat' '(' (condition=Expression)')' block=Block 
 ;
 
 Clock returns Clock:
-    'Clock' '{' 'time' time=Expression  '}'  
+    'Clock''('time=Expression')' 
 ;
 
 Deplacement returns Deplacement:
-    'Deplacement' '{' ('mouvement' mouvement=Mouvement  )? 'deplacement_value' deplacement_value=Expression  'unite' unite=Unite  '}'  
+    'Deplacement''('mouvement=Mouvement','deplacement_value=Expression','unite=Unite')'  
 ;
 
 Speed returns Speed:
-    'Speed' '{' 'value' value=Expression  'unite' unite=Unite  '}'  
+    'setSpeed' '('value=Expression','unite=Unite')'  
 ;
 
 VarDeclaration returns VarDeclaration:
-    'VarDeclaration' name=EString  '{' 'type' ^type=Types  'expression' expression=Expression  '}'  
+    ^type=Types name=EString '=' expression=Expression  
 ;
 
 Assignation returns Assignation:
-    'Assignation' '{' 'valcall' valcall=ValCall  'expression' expression=Expression  '}'  
+   valcall=ValCall '=' expression=Expression
 ;
 
 BinaryExpression returns BinaryExpression:
-    'BinaryExpression' '{' 'left' left=Expression  'right' right=Expression  'operator' operator=ExpressionType  '}'  
+    '('left=Expression operator=ExpressionType right=Expression')'
 ;
 
 ConstantInt returns ConstantInt:
-    {ConstantInt} 'ConstantInt' '{' ('IntegerValue' IntegerValue=EInt  )? '}'  
+    IntegerValue=EInt
 ;
 
 ProcCall returns ProcCall:
-    {ProcCall} 'ProcCall' '{' ('procdeclaration' procdeclaration=[ProcDeclaration:EString ] )? ('arguments' '{' arguments+=Expression  ("," arguments+=Expression  )* '}' )? '}'  
+    procdeclaration=[ProcDeclaration:EString ]('(' arguments+=Expression  ("," arguments+=Expression  )* )?')'  
 ;
 
 DistanceCaptor returns DistanceCaptor:
-    'DistanceCaptor' '{' 'unite' unite=Unite  '}'  
+    'getDistanceFromCaptor' '(' unite=Unite ')'  
 ;
 
 ConstantBoolean returns ConstantBoolean:
-    {ConstantBoolean} (value?='value' )? 'ConstantBoolean'  
+    (value?=EBoolean )?
 ;
 
 ValCall returns ValCall:
-    {ValCall} 'ValCall' '{' ('vardeclaration' vardeclaration=[VarDeclaration:EString ] )? '}'  
+   vardeclaration=[VarDeclaration:EString ]
 ;
 
 Addition returns Addition:

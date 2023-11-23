@@ -33794,14 +33794,6 @@ var RobAstReflection = class extends AbstractAstReflection {
   }
   getTypeMetaData(type) {
     switch (type) {
-      case "Robot": {
-        return {
-          name: "Robot",
-          mandatory: [
-            { name: "functions", type: "array" }
-          ]
-        };
-      }
       case "ConstantBoolean": {
         return {
           name: "ConstantBoolean",
@@ -33856,76 +33848,23 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$type": "Group",
         "elements": [
           {
-            "$type": "Action",
-            "type": {
-              "$ref": "#/interfaces@0"
+            "$type": "Keyword",
+            "value": "fun"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "functions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@5"
+              },
+              "arguments": []
             }
-          },
-          {
-            "$type": "Keyword",
-            "value": "Robot"
-          },
-          {
-            "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "functions"
-              },
-              {
-                "$type": "Keyword",
-                "value": "{"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "functions",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@5"
-                  },
-                  "arguments": []
-                }
-              },
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Keyword",
-                    "value": ","
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "functions",
-                    "operator": "+=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@5"
-                      },
-                      "arguments": []
-                    }
-                  }
-                ],
-                "cardinality": "*"
-              },
-              {
-                "$type": "Keyword",
-                "value": "}"
-              }
-            ],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
           }
-        ]
+        ],
+        "cardinality": "*"
       },
       "definesHiddenTokens": false,
       "fragment": false,
@@ -33940,70 +33879,86 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$ref": "#/interfaces@3"
       },
       "definition": {
-        "$type": "Alternatives",
+        "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@6"
-            },
-            "arguments": []
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@6"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@12"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@13"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@14"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@15"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@16"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@17"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@22"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@18"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@19"
+                },
+                "arguments": []
+              }
+            ]
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@12"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@13"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@14"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@15"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@16"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@17"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@18"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@19"
-            },
-            "arguments": []
+            "$type": "Keyword",
+            "value": ";"
           }
         ]
       },
@@ -34183,8 +34138,16 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$type": "Group",
         "elements": [
           {
-            "$type": "Keyword",
-            "value": "ProcDeclaration"
+            "$type": "Assignment",
+            "feature": "returnedType",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@8"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -34199,50 +34162,17 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
             }
           },
           {
-            "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Keyword",
-            "value": "returnedType"
-          },
-          {
             "$type": "Assignment",
-            "feature": "returnedType",
+            "feature": "block",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@8"
+                "$ref": "#/rules@6"
               },
               "arguments": []
-            }
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "block"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "block",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@6"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
+            },
             "cardinality": "?"
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
           }
         ]
       },
@@ -34263,30 +34193,12 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$type": "Group",
         "elements": [
           {
-            "$type": "Action",
-            "type": {
-              "$ref": "#/interfaces@2"
-            }
-          },
-          {
-            "$type": "Keyword",
-            "value": "Block"
-          },
-          {
             "$type": "Keyword",
             "value": "{"
           },
           {
             "$type": "Group",
             "elements": [
-              {
-                "$type": "Keyword",
-                "value": "statements"
-              },
-              {
-                "$type": "Keyword",
-                "value": "{"
-              },
               {
                 "$type": "Assignment",
                 "feature": "statements",
@@ -34300,30 +34212,17 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
                 }
               },
               {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Keyword",
-                    "value": ","
+                "$type": "Assignment",
+                "feature": "statements",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@1"
                   },
-                  {
-                    "$type": "Assignment",
-                    "feature": "statements",
-                    "operator": "+=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@1"
-                      },
-                      "arguments": []
-                    }
-                  }
-                ],
+                  "arguments": []
+                },
                 "cardinality": "*"
-              },
-              {
-                "$type": "Keyword",
-                "value": "}"
               }
             ],
             "cardinality": "?"
@@ -34332,7 +34231,8 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
             "$type": "Keyword",
             "value": "}"
           }
-        ]
+        ],
+        "cardinality": "?"
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -34476,29 +34376,43 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
+            "value": "("
+          },
+          {
+            "$type": "Assignment",
+            "feature": "condition",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@2"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": ")"
+          },
+          {
+            "$type": "Keyword",
             "value": "{"
           },
           {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "condition"
+            "$type": "Keyword",
+            "value": "then"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "then",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@6"
               },
-              {
-                "$type": "Assignment",
-                "feature": "condition",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@2"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "?"
+              "arguments": []
+            }
           },
           {
             "$type": "Group",
@@ -34521,22 +34435,6 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
               }
             ],
             "cardinality": "?"
-          },
-          {
-            "$type": "Keyword",
-            "value": "then"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "then",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@6"
-              },
-              "arguments": []
-            }
           },
           {
             "$type": "Keyword",
@@ -34566,33 +34464,23 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "{"
+            "value": "("
           },
           {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "condition"
+            "$type": "Assignment",
+            "feature": "condition",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@2"
               },
-              {
-                "$type": "Assignment",
-                "feature": "condition",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@2"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "?"
+              "arguments": []
+            }
           },
           {
             "$type": "Keyword",
-            "value": "block"
+            "value": ")"
           },
           {
             "$type": "Assignment",
@@ -34605,10 +34493,6 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
               },
               "arguments": []
             }
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
           }
         ]
       },
@@ -34634,33 +34518,23 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "{"
+            "value": "("
           },
           {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "condition"
+            "$type": "Assignment",
+            "feature": "condition",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@2"
               },
-              {
-                "$type": "Assignment",
-                "feature": "condition",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@2"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "?"
+              "arguments": []
+            }
           },
           {
             "$type": "Keyword",
-            "value": "block"
+            "value": ")"
           },
           {
             "$type": "Assignment",
@@ -34673,10 +34547,6 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
               },
               "arguments": []
             }
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
           }
         ]
       },
@@ -34702,11 +34572,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Keyword",
-            "value": "time"
+            "value": "("
           },
           {
             "$type": "Assignment",
@@ -34722,7 +34588,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "}"
+            "value": ")"
           }
         ]
       },
@@ -34748,33 +34614,23 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "{"
+            "value": "("
           },
           {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "mouvement"
+            "$type": "Assignment",
+            "feature": "mouvement",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@37"
               },
-              {
-                "$type": "Assignment",
-                "feature": "mouvement",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@37"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "?"
+              "arguments": []
+            }
           },
           {
             "$type": "Keyword",
-            "value": "deplacement_value"
+            "value": ","
           },
           {
             "$type": "Assignment",
@@ -34790,7 +34646,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "unite"
+            "value": ","
           },
           {
             "$type": "Assignment",
@@ -34806,7 +34662,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "}"
+            "value": ")"
           }
         ]
       },
@@ -34828,15 +34684,11 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "elements": [
           {
             "$type": "Keyword",
-            "value": "Speed"
+            "value": "setSpeed"
           },
           {
             "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Keyword",
-            "value": "value"
+            "value": "("
           },
           {
             "$type": "Assignment",
@@ -34852,7 +34704,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "unite"
+            "value": ","
           },
           {
             "$type": "Assignment",
@@ -34868,7 +34720,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "}"
+            "value": ")"
           }
         ]
       },
@@ -34889,8 +34741,16 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$type": "Group",
         "elements": [
           {
-            "$type": "Keyword",
-            "value": "VarDeclaration"
+            "$type": "Assignment",
+            "feature": "type",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@8"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -34906,27 +34766,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Keyword",
-            "value": "type"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "type",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@8"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Keyword",
-            "value": "expression"
+            "value": "="
           },
           {
             "$type": "Assignment",
@@ -34939,10 +34779,6 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
               },
               "arguments": []
             }
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
           }
         ]
       },
@@ -34963,18 +34799,6 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$type": "Group",
         "elements": [
           {
-            "$type": "Keyword",
-            "value": "Assignation"
-          },
-          {
-            "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Keyword",
-            "value": "valcall"
-          },
-          {
             "$type": "Assignment",
             "feature": "valcall",
             "operator": "=",
@@ -34988,7 +34812,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "expression"
+            "value": "="
           },
           {
             "$type": "Assignment",
@@ -35001,10 +34825,6 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
               },
               "arguments": []
             }
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
           }
         ]
       },
@@ -35026,15 +34846,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "elements": [
           {
             "$type": "Keyword",
-            "value": "BinaryExpression"
-          },
-          {
-            "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Keyword",
-            "value": "left"
+            "value": "("
           },
           {
             "$type": "Assignment",
@@ -35049,8 +34861,16 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
             }
           },
           {
-            "$type": "Keyword",
-            "value": "right"
+            "$type": "Assignment",
+            "feature": "operator",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@4"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -35066,23 +34886,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "operator"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "operator",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@4"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
+            "value": ")"
           }
         ]
       },
@@ -35100,49 +34904,16 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$ref": "#/interfaces@19"
       },
       "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Action",
-            "type": {
-              "$ref": "#/interfaces@19"
-            }
+        "$type": "Assignment",
+        "feature": "IntegerValue",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@33"
           },
-          {
-            "$type": "Keyword",
-            "value": "ConstantInt"
-          },
-          {
-            "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "IntegerValue"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "IntegerValue",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@33"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
-          }
-        ]
+          "arguments": []
+        }
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -35161,58 +34932,30 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$type": "Group",
         "elements": [
           {
-            "$type": "Action",
-            "type": {
-              "$ref": "#/interfaces@20"
+            "$type": "Assignment",
+            "feature": "procdeclaration",
+            "operator": "=",
+            "terminal": {
+              "$type": "CrossReference",
+              "type": {
+                "$ref": "#/interfaces@1"
+              },
+              "terminal": {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@7"
+                },
+                "arguments": []
+              },
+              "deprecatedSyntax": false
             }
           },
           {
-            "$type": "Keyword",
-            "value": "ProcCall"
-          },
-          {
-            "$type": "Keyword",
-            "value": "{"
-          },
-          {
             "$type": "Group",
             "elements": [
               {
                 "$type": "Keyword",
-                "value": "procdeclaration"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "procdeclaration",
-                "operator": "=",
-                "terminal": {
-                  "$type": "CrossReference",
-                  "type": {
-                    "$ref": "#/interfaces@1"
-                  },
-                  "terminal": {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@7"
-                    },
-                    "arguments": []
-                  },
-                  "deprecatedSyntax": false
-                }
-              }
-            ],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "arguments"
-              },
-              {
-                "$type": "Keyword",
-                "value": "{"
+                "value": "("
               },
               {
                 "$type": "Assignment",
@@ -35247,17 +34990,13 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
                   }
                 ],
                 "cardinality": "*"
-              },
-              {
-                "$type": "Keyword",
-                "value": "}"
               }
             ],
             "cardinality": "?"
           },
           {
             "$type": "Keyword",
-            "value": "}"
+            "value": ")"
           }
         ]
       },
@@ -35279,15 +35018,11 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "elements": [
           {
             "$type": "Keyword",
-            "value": "DistanceCaptor"
+            "value": "getDistanceFromCaptor"
           },
           {
             "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Keyword",
-            "value": "unite"
+            "value": "("
           },
           {
             "$type": "Assignment",
@@ -35303,7 +35038,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "}"
+            "value": ")"
           }
         ]
       },
@@ -35321,29 +35056,17 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$ref": "#/interfaces@23"
       },
       "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Action",
-            "type": {
-              "$ref": "#/interfaces@23"
-            }
+        "$type": "Assignment",
+        "feature": "value",
+        "operator": "?=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@36"
           },
-          {
-            "$type": "Assignment",
-            "feature": "value",
-            "operator": "?=",
-            "terminal": {
-              "$type": "Keyword",
-              "value": "value"
-            },
-            "cardinality": "?"
-          },
-          {
-            "$type": "Keyword",
-            "value": "ConstantBoolean"
-          }
-        ]
+          "arguments": []
+        },
+        "cardinality": "?"
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -35359,56 +35082,23 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$ref": "#/interfaces@17"
       },
       "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Action",
-            "type": {
-              "$ref": "#/interfaces@17"
-            }
+        "$type": "Assignment",
+        "feature": "vardeclaration",
+        "operator": "=",
+        "terminal": {
+          "$type": "CrossReference",
+          "type": {
+            "$ref": "#/interfaces@15"
           },
-          {
-            "$type": "Keyword",
-            "value": "ValCall"
+          "terminal": {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@7"
+            },
+            "arguments": []
           },
-          {
-            "$type": "Keyword",
-            "value": "{"
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "vardeclaration"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "vardeclaration",
-                "operator": "=",
-                "terminal": {
-                  "$type": "CrossReference",
-                  "type": {
-                    "$ref": "#/interfaces@15"
-                  },
-                  "terminal": {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@7"
-                    },
-                    "arguments": []
-                  },
-                  "deprecatedSyntax": false
-                }
-              }
-            ],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Keyword",
-            "value": "}"
-          }
-        ]
+          "deprecatedSyntax": false
+        }
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -36289,12 +35979,9 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           "$type": "TypeAttribute",
           "name": "functions",
           "type": {
-            "$type": "ArrayType",
-            "elementType": {
-              "$type": "SimpleType",
-              "typeRef": {
-                "$ref": "#/interfaces@1"
-              }
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@1"
             }
           },
           "isOptional": false

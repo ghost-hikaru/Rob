@@ -23,28 +23,28 @@
         "serve": "npm run dev"
     },
     "dependencies": {
-        "langium": "~2.1.0",
-        "vscode-languageclient": "~9.0.1",
-        "vscode-languageserver": "~9.0.1",
-        "chalk": "~5.3.0",
-        "commander": "~11.0.0",
         "@codingame/monaco-vscode-editor-service-override": "~1.83.2",
         "@codingame/monaco-vscode-keybindings-service-override": "~1.83.2",
+        "chalk": "~5.3.0",
+        "commander": "~11.0.0",
+        "langium": "~2.1.0",
         "monaco-editor-workers": "~0.44.0",
         "monaco-editor-wrapper": "~3.3.0",
         "monaco-languageclient": "~6.6.0",
-        "vscode": "npm:@codingame/monaco-vscode-api@>=1.83.2 <1.84.0"
+        "vscode": "npm:@codingame/monaco-vscode-api@>=1.83.2 <1.84.0",
+        "vscode-languageclient": "~9.0.1",
+        "vscode-languageserver": "~9.0.1"
     },
     "devDependencies": {
         "@types/node": "~16.18.41",
-        "@typescript-eslint/parser": "~6.4.1",
+        "@types/vscode": "~1.67.0",
         "@typescript-eslint/eslint-plugin": "~6.4.1",
+        "@typescript-eslint/parser": "~6.4.1",
+        "concurrently": "~8.2.1",
+        "esbuild": "~0.19.2",
         "eslint": "~8.47.0",
         "langium-cli": "~2.1.0",
         "typescript": "~5.1.6",
-        "@types/vscode": "~1.67.0",
-        "concurrently": "~8.2.1",
-        "esbuild": "~0.19.2",
         "vite": "~4.4.11"
     },
     "displayName": "Rob",
@@ -63,7 +63,9 @@
                     "Rob",
                     "rob"
                 ],
-                "extensions": [".rob"],
+                "extensions": [
+                    ".rob"
+                ],
                 "configuration": "./language-configuration.json"
             }
         ],
