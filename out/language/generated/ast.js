@@ -220,14 +220,6 @@ export class RobAstReflection extends AbstractAstReflection {
     }
     getTypeMetaData(type) {
         switch (type) {
-            case 'Robot': {
-                return {
-                    name: 'Robot',
-                    mandatory: [
-                        { name: 'functions', type: 'array' }
-                    ]
-                };
-            }
             case 'ConstantBoolean': {
                 return {
                     name: 'ConstantBoolean',

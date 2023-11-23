@@ -1,12 +1,12 @@
 // Monarch syntax highlighting for the rob language.
 export default {
     keywords: [
-        'ARRIERE','AVANT','Addition','And','Assignation','BinaryExpression','Block','Boolean','CM','Clock','ConstantBoolean','ConstantInt','DROITE','Deplacement','DistanceCaptor','GAUCHE','Greater','If','IntegerValue','Lower','MM','Multiplication','Number','Or','ProcCall','ProcDeclaration','Repeat','Soustraction','Speed','ValCall','VarDeclaration','Void','While','arguments','block','condition','deplacement_value','else','expression','fun','left','mouvement','operator','procdeclaration','returnedType','right','statements','then','time','type','unite','valcall','value','vardeclaration'
+        'ARRIERE','AVANT','Addition','And','Boolean','CM','Clock','DROITE','Deplacement','GAUCHE','Greater','If','Lower','MM','Multiplication','Number','Or','Repeat','Soustraction','Void','While','else','false','fun','getDistanceFromCaptor','setSpeed','then','true'
     ],
     operators: [
-        ',','-'
+        ',','-',';','='
     ],
-    symbols: /,|-|\{|\}/,
+    symbols: /\(|\)|,|-|;|=|\{|\}/,
 
     tokenizer: {
         initial: [

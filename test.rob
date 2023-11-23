@@ -1,0 +1,26 @@
+fun Number procedure {
+    If(false){
+        then{
+            Clock(90);
+            setSpeed(90,MM);
+            Number Distance = getDistanceFromCaptor(CM);
+        }
+        else{
+            Clock(90);
+            }
+    };
+    While(false){
+     Deplacement(AVANT, 1, CM);
+    };
+
+    Repeat(false){
+        setSpeed(90, MM);
+    };
+
+    Clock(90);
+    Number Distance = getDistanceFromCaptor(CM);
+    Number Melvin = 8;
+    Melvin = 9;
+}
+
+fun Void test{}
