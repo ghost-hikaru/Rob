@@ -3,7 +3,7 @@ import 'Terminals'
 import 'robML-types'
 
 entry Robot returns Robot:
-    ('fun' functions=ProcDeclaration)*
+    (function+=ProcDeclaration)*
 ;
 
 Statement returns Statement:
@@ -23,7 +23,7 @@ ExpressionType returns ExpressionType:
 ;
 
 ProcDeclaration returns ProcDeclaration:
-    returnedType=Types name=EString (block=Block)? 
+    'fun' returnedType=Types name=EString (block=Block)? 
 ;
 
 Block returns Block:

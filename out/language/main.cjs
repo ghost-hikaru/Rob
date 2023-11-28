@@ -33794,6 +33794,14 @@ var RobAstReflection = class extends AbstractAstReflection {
   }
   getTypeMetaData(type) {
     switch (type) {
+      case "Robot": {
+        return {
+          name: "Robot",
+          mandatory: [
+            { name: "function", type: "array" }
+          ]
+        };
+      }
       case "ConstantBoolean": {
         return {
           name: "ConstantBoolean",
@@ -33845,25 +33853,16 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "$ref": "#/interfaces@0"
       },
       "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": "fun"
+        "$type": "Assignment",
+        "feature": "function",
+        "operator": "+=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@5"
           },
-          {
-            "$type": "Assignment",
-            "feature": "functions",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@5"
-              },
-              "arguments": []
-            }
-          }
-        ],
+          "arguments": []
+        },
         "cardinality": "*"
       },
       "definesHiddenTokens": false,
@@ -34137,6 +34136,10 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
       "definition": {
         "$type": "Group",
         "elements": [
+          {
+            "$type": "Keyword",
+            "value": "fun"
+          },
           {
             "$type": "Assignment",
             "feature": "returnedType",
@@ -35977,11 +35980,14 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
       "attributes": [
         {
           "$type": "TypeAttribute",
-          "name": "functions",
+          "name": "function",
           "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@1"
+            "$type": "ArrayType",
+            "elementType": {
+              "$type": "SimpleType",
+              "typeRef": {
+                "$ref": "#/interfaces@1"
+              }
             }
           },
           "isOptional": false
@@ -36787,6 +36793,97 @@ var RobValidator = class {
   }*/
 };
 
+// src/semantics/accept-weaver.ts
+function weaveAcceptMethods(services) {
+  const registry = services.validation.ValidationRegistry;
+  const weaver = new RoboMlAcceptWeaver();
+  registry.register(weaver.checks, weaver);
+}
+var RoboMlAcceptWeaver = class {
+  constructor() {
+    this.checks = {
+      Robot: this.weaveRobot,
+      ProcDeclaration: this.weaveProcDeclaration,
+      Block: this.weaveBlock,
+      If: this.weaveIf,
+      Clock: this.weaveClock,
+      ConstantInt: this.weaveConstantInt,
+      Speed: this.weaveSpeed,
+      CM: this.weaveCM,
+      MM: this.weaveMM,
+      DistanceCaptor: this.weaveDistanceCaptor,
+      Assignation: this.weaveAssignation,
+      ValCall: this.weaveValCall,
+      VarDeclaration: this.weaveVarDeclaration
+    };
+  }
+  weaveRobot(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitRobot(node);
+    };
+  }
+  weaveProcDeclaration(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitProcDeclaration(node);
+    };
+  }
+  weaveBlock(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitBlock(node);
+    };
+  }
+  weaveIf(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitIf(node);
+    };
+  }
+  weaveClock(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitClock(node);
+    };
+  }
+  weaveConstantInt(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitConstInt(node);
+    };
+  }
+  weaveSpeed(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitSpeed(node);
+    };
+  }
+  weaveCM(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitCM(node);
+    };
+  }
+  weaveMM(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitMM(node);
+    };
+  }
+  weaveDistanceCaptor(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitDistanceCaptor(node);
+    };
+  }
+  weaveAssignation(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitAssignation(node);
+    };
+  }
+  weaveValCall(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitValCall(node);
+    };
+  }
+  weaveVarDeclaration(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitVarDeclaration(node);
+    };
+  }
+};
+
 // src/language/rob-module.ts
 var RobModule = {
   validation: {
@@ -36805,6 +36902,7 @@ function createRobServices(context) {
   );
   shared2.ServiceRegistry.register(Rob);
   registerValidationChecks2(Rob);
+  weaveAcceptMethods(Rob);
   return { shared: shared2, Rob };
 }
 

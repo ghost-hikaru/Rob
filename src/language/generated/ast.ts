@@ -88,7 +88,7 @@ export function isProcDeclaration(item: unknown): item is ProcDeclaration {
 
 export interface Robot extends AstNode {
     readonly $type: 'Robot';
-    functions: ProcDeclaration
+    function: Array<ProcDeclaration>
 }
 
 export const Robot = 'Robot';
@@ -523,6 +523,14 @@ export class RobAstReflection extends AbstractAstReflection {
 
     getTypeMetaData(type: string): TypeMetaData {
         switch (type) {
+            case 'Robot': {
+                return {
+                    name: 'Robot',
+                    mandatory: [
+                        { name: 'function', type: 'array' }
+                    ]
+                };
+            }
             case 'ConstantBoolean': {
                 return {
                     name: 'ConstantBoolean',

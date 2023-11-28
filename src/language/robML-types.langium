@@ -11,7 +11,7 @@ type Mouvement_DROITE = 'DROITE';
 type Mouvement_GAUCHE = 'GAUCHE';
 
 interface Robot {
-	functions: ProcDeclaration
+	function: ProcDeclaration[]
 }
 
 interface ProcDeclaration {

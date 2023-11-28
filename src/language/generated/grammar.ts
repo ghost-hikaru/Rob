@@ -21,25 +21,16 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
         "$ref": "#/interfaces@0"
       },
       "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": "fun"
+        "$type": "Assignment",
+        "feature": "function",
+        "operator": "+=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@5"
           },
-          {
-            "$type": "Assignment",
-            "feature": "functions",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@5"
-              },
-              "arguments": []
-            }
-          }
-        ],
+          "arguments": []
+        },
         "cardinality": "*"
       },
       "definesHiddenTokens": false,
@@ -313,6 +304,10 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
       "definition": {
         "$type": "Group",
         "elements": [
+          {
+            "$type": "Keyword",
+            "value": "fun"
+          },
           {
             "$type": "Assignment",
             "feature": "returnedType",
@@ -2153,11 +2148,14 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
       "attributes": [
         {
           "$type": "TypeAttribute",
-          "name": "functions",
+          "name": "function",
           "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@1"
+            "$type": "ArrayType",
+            "elementType": {
+              "$type": "SimpleType",
+              "typeRef": {
+                "$ref": "#/interfaces@1"
+              }
             }
           },
           "isOptional": false

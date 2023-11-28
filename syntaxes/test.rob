@@ -19,7 +19,8 @@ fun Number procedure {
 
     Clock(90);
     Number Distance = getDistanceFromCaptor(CM);
-    Number Melvin = 8;
+    Boolean Melvin = 8;
+    Void Melvin = 8;
     Melvin = 9;
 }
 

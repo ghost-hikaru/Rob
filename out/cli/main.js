@@ -8,6 +8,7 @@ import { NodeFileSystem } from 'langium/node';
 import * as url from 'node:url';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import { interpreter } from '../semantics/interpreter.js';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const packagePath = path.resolve(__dirname, '..', '..', 'package.json');
 const packageContent = await fs.readFile(packagePath, 'utf-8');
@@ -27,6 +28,13 @@ export default function () {
         .option('-d, --destination <dir>', 'destination directory of generating')
         .description('generates JavaScript code that prints "Hello, {name}!" for each greeting in a source file')
         .action(generateAction);
+    program.command('print').argument('<file>', `source file (possible file extensions: ${fileExtensions})`)
+        .description('prints the AST of a source file')
+        .action(async (fileName) => {
+        const services = createRobServices(NodeFileSystem).Rob;
+        const model = await extractAstNode(fileName, services);
+        interpreter.interpretRobot(model);
+    });
     program.parse(process.argv);
 }
 //# sourceMappingURL=main.js.map
