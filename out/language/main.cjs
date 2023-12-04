@@ -35127,7 +35127,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "Addition"
+            "value": "+"
           }
         ]
       },
@@ -35155,7 +35155,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "Soustraction"
+            "value": "-"
           }
         ]
       },
@@ -35183,7 +35183,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "Multiplication"
+            "value": "*"
           }
         ]
       },
@@ -35211,7 +35211,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "Lower"
+            "value": "<"
           }
         ]
       },
@@ -35239,7 +35239,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "Greater"
+            "value": ">"
           }
         ]
       },
@@ -35267,7 +35267,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "And"
+            "value": "and"
           }
         ]
       },
@@ -35295,7 +35295,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           },
           {
             "$type": "Keyword",
-            "value": "Or"
+            "value": "or"
           }
         ]
       },
@@ -36814,7 +36814,11 @@ var RoboMlAcceptWeaver = class {
       DistanceCaptor: this.weaveDistanceCaptor,
       Assignation: this.weaveAssignation,
       ValCall: this.weaveValCall,
-      VarDeclaration: this.weaveVarDeclaration
+      VarDeclaration: this.weaveVarDeclaration,
+      ConstantBoolean: this.weaveConstantBoolean,
+      Deplacement: this.weaveDeplacement,
+      Repeat: this.weaveRepeat,
+      BinaryExpression: this.weaveBinaryExpression
     };
   }
   weaveRobot(node, accept) {
@@ -36880,6 +36884,26 @@ var RoboMlAcceptWeaver = class {
   weaveVarDeclaration(node, accept) {
     node.accept = (visitor2) => {
       return visitor2.visitVarDeclaration(node);
+    };
+  }
+  weaveConstantBoolean(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitConstantBoolean(node);
+    };
+  }
+  weaveDeplacement(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitDeplacement(node);
+    };
+  }
+  weaveRepeat(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitRepeat(node);
+    };
+  }
+  weaveBinaryExpression(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitBinaryExpression(node);
     };
   }
 };

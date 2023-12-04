@@ -3,8 +3,6 @@ import { AstNode, CstNode, LangiumDocument, Reference } from 'langium';
 import { Robot } from '../language/generated/ast.js';
 
 export interface RobotMLVisitor{
-    // TODO : create one visit method for each concept of the language
-    //visitConcept(node : Concept) : any;
     visitRobot(node : RobotVisitor) : any
     visitProcDeclaration(node : ProcDeclarationVisitor) : any
     visitBlock(node : BlockVisitor) : any
@@ -18,10 +16,11 @@ export interface RobotMLVisitor{
     visitAssignation(node : AssignationVisitor) : any
     visitValCall(node : ValCallVisitor) : any
     visitVarDeclaration(node : VarDeclarationVisitor) : any
+    visitConstantBoolean(node : ConstantBooleanVisitor) : any
+    visitDeplacement(node : DeplacementVisitor) : any
+    visitRepeat(node : RepeatVisitor) : any
+    visitBinaryExpression(node : BinaryExpressionVisitor) : any
 }
-
-// TODO : create one concrete class for each concept
-// the constructor must take all attribute of the implemented interface 
 
 export class RobotVisitor implements ASTInterfaces.Robot {
     constructor(
@@ -62,10 +61,7 @@ export class BlockVisitor implements ASTInterfaces.Block {
         public $type: 'Block',
         public $container: ProcDeclarationVisitor
     ){}
-    statements!: BlockVisitor[] | IfNode[];
-    if!: IfNode[];
-    while!: ASTInterfaces.While[];
-    repeat!: ASTInterfaces.Repeat[];
+    statements!: BlockVisitor[] | IfNode[] | AssignationVisitor[] | DeplacementVisitor[] | RepeatVisitor[] | VarDeclarationVisitor[] | SpeedNode[];
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
@@ -81,12 +77,9 @@ export class IfNode implements ASTInterfaces.If {
         public $type: 'If',
         public $container: BlockVisitor
     ){}
-    else?: BlockVisitor | undefined;
+    else?: BlockVisitor;
     then!: BlockVisitor;
-    condition!: ASTInterfaces.Expression;
-    block!: BlockVisitor;
-    elseBlock!: BlockVisitor;
-
+    condition!: ConstantBooleanVisitor;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
@@ -132,7 +125,7 @@ export class SpeedNode implements ASTInterfaces.Speed {
     constructor(
         public $type: 'Speed'
     ){}
-    unite!: ASTInterfaces.Unite;
+    unite!: CM | MM;
     value!: ConstInt | DistanceCaptor;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
@@ -235,56 +228,65 @@ export class VarDeclarationVisitor implements ASTInterfaces.VarDeclaration{
     }
 }
 
+export class ConstantBooleanVisitor implements ASTInterfaces.ConstantBoolean{
+    constructor(
+        public $type: 'ConstantBoolean'
+    ){}
+    value!: boolean;
+    $container?: AstNode | undefined;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: RobotMLVisitor): any {
+        visitor.visitConstantBoolean(this);
+    }
+}
 
-export class VisitorImplementation implements RobotMLVisitor{
-    visitVarDeclaration(node: VarDeclarationVisitor) {
-        return node.expression.accept(this);
+export class DeplacementVisitor implements ASTInterfaces.Deplacement{
+    constructor(
+        public $type: 'Deplacement'
+    ){}
+    deplacement_value!: ConstInt | DistanceCaptor;
+    mouvement!: ASTInterfaces.Mouvement | undefined;
+    unite!: CM | MM;
+    $container?: AstNode | undefined;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: RobotMLVisitor): any {
+        visitor.visitDeplacement(this);
     }
-    visitValCall(node: ValCallVisitor) {
-        return (node.vardeclaration as unknown as VarDeclarationVisitor).accept(this);
-    }
-    visitAssignation(node: AssignationVisitor) {
-        return (node.expression.accept(this), node.valcall.accept(this));
-    }
-    visitDistanceCaptor(node: DistanceCaptor) {
-        return node.unite.accept(this);
-    }
-    visitCM(node: CM) {
-        return node.$type;
-    }
-    visitMM(node: MM) {
-        return node.$type;
-    }
-    visitSpeed(node: SpeedNode) {
-        return (node.value.accept(this), node.unite);
-    }
-    visitConstInt(node: ConstInt) {
-        return node.IntegerValue;
-    }
-    visitIf(node: IfNode) {
-       // node.condition.accept(this);
-        return node.then.accept(this),node.elseBlock.accept(this);
-    }
+}
 
-    visitProcDeclaration(node: ProcDeclarationVisitor) {
-        for (let i  = 0; i < node.block.statements.length; i++) {
-            node.block.accept(this);
-        }
+export class RepeatVisitor implements ASTInterfaces.Repeat{
+    constructor(
+        public $type: 'Repeat'
+    ){}
+    block!: BlockVisitor;
+    condition!: ConstantBooleanVisitor;
+    $container?: AstNode | undefined;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: RobotMLVisitor): any {
+        visitor.visitRepeat(this);
     }
+}
 
-    visitRobot(node : RobotVisitor) : any{
-        for (let i = 0; i < node.function.length; i++) {
-            node.function[i].accept(this);
-        }
-    }
-
-    visitBlock(node : BlockVisitor) : any{
-        for (let i = 0; i < node.statements.length; i++) {
-            node.statements[i].accept(this);
-        }
-    }
-
-    visitClock(node: ClockNode) {
-        return node.time.accept(this);
+export class BinaryExpressionVisitor implements ASTInterfaces.BinaryExpression{
+    constructor(
+        public $type: 'BinaryExpression'
+    ){}
+    left!: ConstInt | DistanceCaptor;
+    right!: ConstInt | DistanceCaptor;
+    operator!: ASTInterfaces.ExpressionType;
+    $container?: AstNode | undefined;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    accept(visitor: RobotMLVisitor): any {
+        visitor.visitBinaryExpression(this);
     }
 }

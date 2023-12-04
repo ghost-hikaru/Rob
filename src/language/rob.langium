@@ -90,7 +90,7 @@ DistanceCaptor returns DistanceCaptor:
 ;
 
 ConstantBoolean returns ConstantBoolean:
-    (value?=EBoolean )?
+    (value?=EBoolean )
 ;
 
 ValCall returns ValCall:
@@ -98,31 +98,31 @@ ValCall returns ValCall:
 ;
 
 Addition returns Addition:
-    {Addition} 'Addition'  
+    {Addition} '+'  
 ;
 
 Soustraction returns Soustraction:
-    {Soustraction} 'Soustraction'  
+    {Soustraction} '-'  
 ;
 
 Multiplication returns Multiplication:
-    {Multiplication} 'Multiplication'  
+    {Multiplication} '*'  
 ;
 
 Lower returns Lower:
-    {Lower} 'Lower'  
+    {Lower} '<'  
 ;
 
 Greater returns Greater:
-    {Greater} 'Greater'  
+    {Greater} '>'  
 ;
 
 And returns And:
-    {And} 'And'  
+    {And} 'and'  
 ;
 
 Or returns Or:
-    {Or} 'Or'  
+    {Or} 'or'  
 ;
 
 EInt returns number:

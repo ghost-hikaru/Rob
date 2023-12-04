@@ -1295,7 +1295,7 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
           },
           {
             "$type": "Keyword",
-            "value": "Addition"
+            "value": "+"
           }
         ]
       },
@@ -1323,7 +1323,7 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
           },
           {
             "$type": "Keyword",
-            "value": "Soustraction"
+            "value": "-"
           }
         ]
       },
@@ -1351,7 +1351,7 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
           },
           {
             "$type": "Keyword",
-            "value": "Multiplication"
+            "value": "*"
           }
         ]
       },
@@ -1379,7 +1379,7 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
           },
           {
             "$type": "Keyword",
-            "value": "Lower"
+            "value": "<"
           }
         ]
       },
@@ -1407,7 +1407,7 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
           },
           {
             "$type": "Keyword",
-            "value": "Greater"
+            "value": ">"
           }
         ]
       },
@@ -1435,7 +1435,7 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
           },
           {
             "$type": "Keyword",
-            "value": "And"
+            "value": "and"
           }
         ]
       },
@@ -1463,7 +1463,7 @@ export const RobGrammar = (): Grammar => loadedRobGrammar ?? (loadedRobGrammar =
           },
           {
             "$type": "Keyword",
-            "value": "Or"
+            "value": "or"
           }
         ]
       },

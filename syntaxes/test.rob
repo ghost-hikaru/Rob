@@ -4,24 +4,23 @@ fun Number procedure {
             Clock(90);
             setSpeed(90,MM);
             Number Distance = getDistanceFromCaptor(CM);
+            Number Distance = 2;
         }
         else{
             Clock(90);
             }
     };
-    While(false){
-     Deplacement(AVANT, 1, CM);
-    };
-
     Repeat(false){
+     Deplacement(AVANT, 1, CM);
+     Repeat(false){
         setSpeed(90, MM);
+    };
     };
 
     Clock(90);
     Number Distance = getDistanceFromCaptor(CM);
-    Boolean Melvin = 8;
-    Void Melvin = 8;
-    Melvin = 9;
+    Number Melvin = (8 + 4);
+    Number Enzo = (Melvin * 10);
 }
 
 fun Void test{}
