@@ -62,6 +62,37 @@ void setup() {
   Omni.PIDEnable(0.31, 0.01, 0, 10);
 }
 
+void setSpeed(int speed){
+  Omni.wheelLLSetSpeedMMPS(speed);
+}
+
+void deplacement(string movement, int value){
+  if(movement=="AVANT"){
+    Omni.wheelLLSetSpeedMMPS(value);
+    Omni.wheelLRSetSpeedMMPS(value);
+    Omni.wheelRLSetSpeedMMPS(value);
+    Omni.wheelRRSetSpeedMMPS(value);
+  }
+  else if(movement=="ARRIERE"){
+    Omni.wheelLLSetSpeedMMPS(-value);
+    Omni.wheelLRSetSpeedMMPS(-value);
+    Omni.wheelRLSetSpeedMMPS(-value);
+    Omni.wheelRRSetSpeedMMPS(-value);
+  }
+  else if(movement=="GAUCHE"){
+    Omni.wheelLLSetSpeedMMPS(-value);
+    Omni.wheelLRSetSpeedMMPS(value);
+    Omni.wheelRLSetSpeedMMPS(value);
+    Omni.wheelRRSetSpeedMMPS(-value);
+  }
+  else if(movement=="DROITE"){
+    Omni.wheelLLSetSpeedMMPS(value);
+    Omni.wheelLRSetSpeedMMPS(-value);
+    Omni.wheelRLSetSpeedMMPS(-value);
+    Omni.wheelRRSetSpeedMMPS(value);
+  }
+}
+
 void loop() {
-  Omni.demoActions(30,1500,500,false);
+  main();
 }

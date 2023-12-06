@@ -3,15 +3,33 @@ import * as ASTInterfaces from '../language/generated/ast.js';
 import * as fs from 'fs';
 
 export class CompilaterImplementation implements RobotMLVisitor{
-    PathToFile = "../static/defaultArduino.txt";
-    program: string = lireFichierTexte(this.PathToFile) + "\n";
+    pathToFile = "src/semantics/defaultArduino.ino";
+    pathToWrite = "src/semantics/outputArduino.ino";
+    program: string = "\n\n";
 
     visitRobot(node: RobotVisitor) {
         node.function.map(func => this.program += func.accept(this));
+        fs.readFile(this.pathToFile, 'utf8', (err, data) => {
+            if (err) {
+              console.error(`Erreur de lecture du fichier : ${err}`);
+              return;
+            }
+          
+            const newData = data + this.program;
+          
+            // Réécrire le fichier avec le nouveau contenu
+            fs.writeFile(this.pathToWrite, newData, 'utf8', (err) => {
+              if (err) {
+                console.error(`Erreur d'écriture du fichier : ${err}`);
+                return;
+              }
+              console.log('Code ajouté avec succès !');
+            });
+          });
         return this.program;
     }
     visitProcDeclaration(node: ProcDeclarationVisitor) {
-        return (node.returnedType === "Number" ? "int" : (node.returnedType === "Boolean" ? "bool" : node.returnedType)) + " " + node.name + "(" + node.parameters.map(param => (param.type=="Number"? "int" : (param.type=="Boolean"? "bool" : param.type)) + " " + param.name).join(', ') + ") {\n"
+        return (node.returnedType === "Number" ? "int" : (node.returnedType === "Boolean" ? "bool" : "void")) + " " + node.name + "(" + node.parameters.map(param => (param.type=="Number"? "int" : (param.type=="Boolean"? "bool" : param.type)) + " " + param.name).join(', ') + ") {\n"
         + node.block.statements.map(statement => statement.accept(this)).join('\n') + "}\n";
     }
     visitBlock(node: BlockVisitor) {
@@ -27,7 +45,7 @@ export class CompilaterImplementation implements RobotMLVisitor{
         return node.IntegerValue;
     }
     visitSpeed(node: SpeedNode) {
-        return "setSpeed(" + node.value.accept(this) + " " + node.unite.accept(this) + ");\n";
+        return "setSpeed(" + node.value.accept(this) + "*" + node.unite.accept(this) + ");\n";
     }
     visitCM(node: CM) {
         return "* 0.01";
@@ -45,13 +63,13 @@ export class CompilaterImplementation implements RobotMLVisitor{
         return node.vardeclaration?.ref?.name;
     }
     visitVarDeclaration(node: VarDeclarationVisitor) {
-        return (node.type === "Number" ? "int" : (node.type === "Boolean" ? "bool" : node.type)) + " " + node.name + " = " + node.expression.accept(this)+";";
+        return (node.type === "Number" ? "int" : (node.type === "Boolean" ? "bool" : "void")) + " " + node.name + " = " + node.expression.accept(this)+";";
     }
     visitConstantBoolean(node: ConstantBooleanVisitor) {
         return node.value;
     }
     visitDeplacement(node: DeplacementVisitor) {
-        return "deplacement(" + node.mouvement + " " + node.unite.accept(this) + ");\n";
+        return "deplacement(" + node.mouvement + "," + node.deplacement_value.accept(this) + "*" + node.unite.accept(this) + ");\n";
     }
     visitRepeat(node: RepeatVisitor) {
         return "while(" + node.condition.accept(this) + ") {\n" + node.block.accept(this) + "\n}\n";
@@ -91,16 +109,5 @@ export class CompilaterImplementation implements RobotMLVisitor{
     }
     visitReturn(node: ReturnVisitor) {
         return "return " + node.expression.accept(this) + ";\n";
-    }
-}
-
-function lireFichierTexte(nomFichier: string): string {
-    try {
-        // Lire le contenu du fichier
-        const contenuFichier = fs.readFileSync(nomFichier, 'utf-8');
-        return contenuFichier;
-    } catch (erreur) {
-        console.error("Erreur lors de la lecture du fichier :", erreur);
-        return '';
     }
 }
