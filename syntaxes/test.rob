@@ -1,26 +1,37 @@
-fun Number procedure {
-    If(false){
+fun Number procedure(Number Melvin, Boolean Enzo) {
+    If((((Melvin > Enzo) and (Melvin == 2)) and (Melvin <10))){
         then{
-            Clock(90);
-            setSpeed(90,MM);
-            Number Distance = getDistanceFromCaptor(CM);
-            Number Distance = 2;
+            Number Distance = 80;
+            Distance = (Distance + 3);
+            print(Distance);
         }
         else{
-            Clock(90);
-            }
+            Number Distance = 78;
+            Distance = (Distance + 3);
+            print(Distance);
+        }
     };
-    Repeat(false){
-     Deplacement(AVANT, 1, CM);
-     Repeat(false){
-        setSpeed(90, MM);
+    Repeat((Melvin<10)){
+        print(Melvin);
+        Melvin = (Melvin + 1);
     };
-    };
-
-    Clock(90);
-    Number Distance = getDistanceFromCaptor(CM);
-    Number Melvin = (8 + 4);
-    Number Enzo = (Melvin * 10);
+}
+fun Void main(){
+    /*Number testVar = 8;*/
+    /*procedure(2, 1);*/
+    Number testReturn = (Un() + Deux());
+    print(testReturn);
 }
 
-fun Void test{}
+fun Number Un(){
+    Number test = 10;
+    Boolean test2 = true;
+    print(test);
+    return 1;
+}
+
+fun Number Deux(){
+    return 2;
+}
+fun Void print(){
+}

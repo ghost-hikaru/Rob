@@ -20,6 +20,8 @@ export interface RobotMLVisitor{
     visitDeplacement(node : DeplacementVisitor) : any
     visitRepeat(node : RepeatVisitor) : any
     visitBinaryExpression(node : BinaryExpressionVisitor) : any
+    visitProcCall(node : ProcCallVisitor) : any
+    visitReturn(node : ReturnVisitor) : any
 }
 
 export class RobotVisitor implements ASTInterfaces.Robot {
@@ -27,6 +29,7 @@ export class RobotVisitor implements ASTInterfaces.Robot {
         public $type: 'Robot'
     ){}
     function!: ProcDeclarationVisitor[];
+    procCall!: ProcCallVisitor[];
     $container?: AstNode | undefined;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
@@ -40,7 +43,8 @@ export class RobotVisitor implements ASTInterfaces.Robot {
 export class ProcDeclarationVisitor implements ASTInterfaces.ProcDeclaration {
     constructor(
         public $type: 'ProcDeclaration',
-        public $container: Robot
+        public $container: Robot,
+        public parameters: VarDeclarationVisitor[],
     ){}
     name!: string;
     returnedType!: ASTInterfaces.Types;
@@ -56,12 +60,13 @@ export class ProcDeclarationVisitor implements ASTInterfaces.ProcDeclaration {
     }
 }
 
+
 export class BlockVisitor implements ASTInterfaces.Block {
     constructor(
         public $type: 'Block',
-        public $container: ProcDeclarationVisitor
+        public $container: ProcDeclarationVisitor | IfNode | RepeatVisitor
     ){}
-    statements!: BlockVisitor[] | IfNode[] | AssignationVisitor[] | DeplacementVisitor[] | RepeatVisitor[] | VarDeclarationVisitor[] | SpeedNode[];
+    statements!: (BlockVisitor | IfNode | AssignationVisitor | DeplacementVisitor | RepeatVisitor | VarDeclarationVisitor | SpeedNode)[];
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
@@ -79,7 +84,7 @@ export class IfNode implements ASTInterfaces.If {
     ){}
     else?: BlockVisitor;
     then!: BlockVisitor;
-    condition!: ConstantBooleanVisitor;
+    condition!: ConstantBooleanVisitor | BinaryExpressionVisitor;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
@@ -184,7 +189,7 @@ export class AssignationVisitor implements ASTInterfaces.Assignation{
     constructor(
         public $type: 'Assignation'
     ){}
-    expression!: ConstInt | DistanceCaptor;
+    expression!: ConstInt | DistanceCaptor | BinaryExpressionVisitor | ConstantBooleanVisitor | ValCallVisitor | ProcCallVisitor;
     valcall!: ValCallVisitor;
     $container?: AstNode | undefined;
     $containerProperty?: string | undefined;
@@ -215,10 +220,10 @@ export class VarDeclarationVisitor implements ASTInterfaces.VarDeclaration{
     constructor(
         public $type: 'VarDeclaration'
     ){}
-    expression!: ConstInt | DistanceCaptor;
+    $container!: ASTInterfaces.ProcDeclaration;
+    expression!: ConstInt | DistanceCaptor | BinaryExpressionVisitor | ConstantBooleanVisitor | ValCallVisitor | ProcCallVisitor;
     name!: string;
     type!: ASTInterfaces.Types;
-    $container?: AstNode | undefined;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
@@ -265,7 +270,7 @@ export class RepeatVisitor implements ASTInterfaces.Repeat{
         public $type: 'Repeat'
     ){}
     block!: BlockVisitor;
-    condition!: ConstantBooleanVisitor;
+    condition!: ConstantBooleanVisitor | BinaryExpressionVisitor;
     $container?: AstNode | undefined;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
@@ -288,5 +293,36 @@ export class BinaryExpressionVisitor implements ASTInterfaces.BinaryExpression{
     $containerIndex?: number | undefined;
     accept(visitor: RobotMLVisitor): any {
         visitor.visitBinaryExpression(this);
+    }
+}
+
+export class ProcCallVisitor implements ASTInterfaces.ProcCall{
+    constructor(
+        public $type: 'ProcCall'
+    ){}
+    procdeclaration!: Reference<ProcDeclarationVisitor>;
+    arguments!: BinaryExpressionVisitor[] | ValCallVisitor[] | ConstInt[] | DistanceCaptor[] | ConstantBooleanVisitor[];
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    $container?: AstNode | undefined;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    accept(visitor: RobotMLVisitor): any {
+        visitor.visitProcCall(this);
+    }
+}
+
+export class ReturnVisitor implements ASTInterfaces.Return{
+    constructor(
+        public $type: 'Return'
+    ){}
+    expression!: ConstInt | DistanceCaptor | BinaryExpressionVisitor | ConstantBooleanVisitor | ValCallVisitor | ProcCallVisitor;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    $container?: AstNode | undefined;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    accept(visitor: RobotMLVisitor): any {
+        visitor.visitReturn(this);
     }
 }

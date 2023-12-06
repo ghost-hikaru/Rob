@@ -7,7 +7,7 @@ entry Robot returns Robot:
 ;
 
 Statement returns Statement:
-    (Block | If | While | Repeat | Clock | Deplacement | Speed | ProcCall | VarDeclaration | Assignation) ';'
+    (Block | If | While | Repeat | Clock | Deplacement | Speed | ProcCall | VarDeclaration | Assignation | Return) ';'
 ;
 
 Expression returns Expression:
@@ -19,11 +19,11 @@ Unite returns Unite:
 ;
 
 ExpressionType returns ExpressionType:
-    Addition | Soustraction | Multiplication | Lower | Greater | And | Or 
+    Addition | Soustraction | Multiplication | Lower | Greater | And | Or | Equality
 ;
 
 ProcDeclaration returns ProcDeclaration:
-    'fun' returnedType=Types name=EString (block=Block)? 
+    'fun' returnedType=Types name=EString ('(' (parameters+=VarDeclaration(",")?)* ')') (block=Block)? 
 ;
 
 Block returns Block:
@@ -66,7 +66,7 @@ Speed returns Speed:
 ;
 
 VarDeclaration returns VarDeclaration:
-    ^type=Types name=EString '=' expression=Expression  
+    ^type=Types name=EString ('=' expression=Expression)?  
 ;
 
 Assignation returns Assignation:
@@ -82,7 +82,7 @@ ConstantInt returns ConstantInt:
 ;
 
 ProcCall returns ProcCall:
-    procdeclaration=[ProcDeclaration:EString ]('(' arguments+=Expression  ("," arguments+=Expression  )* )?')'  
+    procdeclaration=[ProcDeclaration:EString]'('(arguments+=Expression  ("," arguments+=Expression  )*)?')'  
 ;
 
 DistanceCaptor returns DistanceCaptor:
@@ -90,7 +90,7 @@ DistanceCaptor returns DistanceCaptor:
 ;
 
 ConstantBoolean returns ConstantBoolean:
-    (value?=EBoolean )
+    (value=EBoolean )
 ;
 
 ValCall returns ValCall:
@@ -117,6 +117,10 @@ Greater returns Greater:
     {Greater} '>'  
 ;
 
+Equality returns Equality:
+    {Equality} '=='
+;
+
 And returns And:
     {And} 'and'  
 ;
@@ -139,6 +143,10 @@ CM returns CM:
 
 EBoolean returns boolean:
     'true' | 'false' 
+;
+
+Return returns Return:
+    'return' expression=Expression
 ;
 
 Mouvement returns Mouvement:

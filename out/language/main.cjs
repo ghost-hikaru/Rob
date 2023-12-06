@@ -33707,6 +33707,7 @@ var Sensor = "Sensor";
 var ValCall = "ValCall";
 var Addition = "Addition";
 var And = "And";
+var Equality = "Equality";
 var Greater = "Greater";
 var Lower = "Lower";
 var Multiplication = "Multiplication";
@@ -33716,6 +33717,7 @@ var Assignation = "Assignation";
 var Block = "Block";
 var ControlStructure = "ControlStructure";
 var CustomAction = "CustomAction";
+var Return = "Return";
 var VarDeclaration = "VarDeclaration";
 var CM = "CM";
 var MM = "MM";
@@ -33728,12 +33730,13 @@ var Deplacement = "Deplacement";
 var Speed = "Speed";
 var RobAstReflection = class extends AbstractAstReflection {
   getAllTypes() {
-    return ["Addition", "And", "Assignation", "BinaryExpression", "Block", "CM", "Clock", "ConstantBoolean", "ConstantInt", "ControlStructure", "CustomAction", "Deplacement", "DistanceCaptor", "Expression", "ExpressionType", "Greater", "If", "Lower", "MM", "Multiplication", "Or", "ProcCall", "ProcDeclaration", "Repeat", "Robot", "Sensor", "Soustraction", "Speed", "Statement", "Unite", "ValCall", "VarDeclaration", "While"];
+    return ["Addition", "And", "Assignation", "BinaryExpression", "Block", "CM", "Clock", "ConstantBoolean", "ConstantInt", "ControlStructure", "CustomAction", "Deplacement", "DistanceCaptor", "Equality", "Expression", "ExpressionType", "Greater", "If", "Lower", "MM", "Multiplication", "Or", "ProcCall", "ProcDeclaration", "Repeat", "Return", "Robot", "Sensor", "Soustraction", "Speed", "Statement", "Unite", "ValCall", "VarDeclaration", "While"];
   }
   computeIsSubtype(subtype, supertype) {
     switch (subtype) {
       case Addition:
       case And:
+      case Equality:
       case Greater:
       case Lower:
       case Multiplication:
@@ -33745,6 +33748,7 @@ var RobAstReflection = class extends AbstractAstReflection {
       case Block:
       case ControlStructure:
       case CustomAction:
+      case Return:
       case VarDeclaration: {
         return this.isSubtype(Statement, supertype);
       }
@@ -33794,6 +33798,14 @@ var RobAstReflection = class extends AbstractAstReflection {
   }
   getTypeMetaData(type) {
     switch (type) {
+      case "ProcDeclaration": {
+        return {
+          name: "ProcDeclaration",
+          mandatory: [
+            { name: "parameters", type: "array" }
+          ]
+        };
+      }
       case "Robot": {
         return {
           name: "Robot",
@@ -33952,6 +33964,13 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
                   "$ref": "#/rules@19"
                 },
                 "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@38"
+                },
+                "arguments": []
               }
             ]
           },
@@ -34040,14 +34059,14 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@34"
+              "$ref": "#/rules@35"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@35"
+              "$ref": "#/rules@36"
             },
             "arguments": []
           }
@@ -34107,14 +34126,21 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@31"
+              "$ref": "#/rules@32"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@32"
+              "$ref": "#/rules@33"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@31"
             },
             "arguments": []
           }
@@ -34163,6 +34189,42 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
               },
               "arguments": []
             }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "("
+              },
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Assignment",
+                    "feature": "parameters",
+                    "operator": "+=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@18"
+                      },
+                      "arguments": []
+                    }
+                  },
+                  {
+                    "$type": "Keyword",
+                    "value": ",",
+                    "cardinality": "?"
+                  }
+                ],
+                "cardinality": "*"
+              },
+              {
+                "$type": "Keyword",
+                "value": ")"
+              }
+            ]
           },
           {
             "$type": "Assignment",
@@ -34254,14 +34316,14 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@44"
+              "$ref": "#/rules@46"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@42"
+              "$ref": "#/rules@44"
             },
             "arguments": []
           }
@@ -34626,7 +34688,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@37"
+                "$ref": "#/rules@39"
               },
               "arguments": []
             }
@@ -34768,20 +34830,26 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
             }
           },
           {
-            "$type": "Keyword",
-            "value": "="
-          },
-          {
-            "$type": "Assignment",
-            "feature": "expression",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@2"
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "="
               },
-              "arguments": []
-            }
+              {
+                "$type": "Assignment",
+                "feature": "expression",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@2"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
           }
         ]
       },
@@ -34913,7 +34981,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@33"
+            "$ref": "#/rules@34"
           },
           "arguments": []
         }
@@ -34954,12 +35022,12 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
             }
           },
           {
+            "$type": "Keyword",
+            "value": "("
+          },
+          {
             "$type": "Group",
             "elements": [
-              {
-                "$type": "Keyword",
-                "value": "("
-              },
               {
                 "$type": "Assignment",
                 "feature": "arguments",
@@ -35061,15 +35129,14 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
       "definition": {
         "$type": "Assignment",
         "feature": "value",
-        "operator": "?=",
+        "operator": "=",
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@36"
+            "$ref": "#/rules@37"
           },
           "arguments": []
-        },
-        "cardinality": "?"
+        }
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -35226,7 +35293,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
       "$type": "ParserRule",
       "name": "Greater",
       "returnType": {
-        "$ref": "#/interfaces@28"
+        "$ref": "#/interfaces@29"
       },
       "definition": {
         "$type": "Group",
@@ -35234,7 +35301,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@28"
+              "$ref": "#/interfaces@29"
             }
           },
           {
@@ -35252,9 +35319,9 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
     },
     {
       "$type": "ParserRule",
-      "name": "And",
+      "name": "Equality",
       "returnType": {
-        "$ref": "#/interfaces@29"
+        "$ref": "#/interfaces@28"
       },
       "definition": {
         "$type": "Group",
@@ -35262,7 +35329,35 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@29"
+              "$ref": "#/interfaces@28"
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "=="
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "And",
+      "returnType": {
+        "$ref": "#/interfaces@30"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Action",
+            "type": {
+              "$ref": "#/interfaces@30"
             }
           },
           {
@@ -35282,7 +35377,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
       "$type": "ParserRule",
       "name": "Or",
       "returnType": {
-        "$ref": "#/interfaces@30"
+        "$ref": "#/interfaces@31"
       },
       "definition": {
         "$type": "Group",
@@ -35290,7 +35385,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@30"
+              "$ref": "#/interfaces@31"
             }
           },
           {
@@ -35321,7 +35416,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@43"
+              "$ref": "#/rules@45"
             },
             "arguments": []
           }
@@ -35338,7 +35433,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
       "$type": "ParserRule",
       "name": "MM",
       "returnType": {
-        "$ref": "#/interfaces@31"
+        "$ref": "#/interfaces@32"
       },
       "definition": {
         "$type": "Group",
@@ -35346,7 +35441,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@31"
+              "$ref": "#/interfaces@32"
             }
           },
           {
@@ -35366,7 +35461,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
       "$type": "ParserRule",
       "name": "CM",
       "returnType": {
-        "$ref": "#/interfaces@32"
+        "$ref": "#/interfaces@33"
       },
       "definition": {
         "$type": "Group",
@@ -35374,7 +35469,7 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@32"
+              "$ref": "#/interfaces@33"
             }
           },
           {
@@ -35416,6 +35511,40 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
     },
     {
       "$type": "ParserRule",
+      "name": "Return",
+      "returnType": {
+        "$ref": "#/interfaces@34"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "return"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "expression",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@2"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "Mouvement",
       "returnType": {
         "$ref": "#/types@4"
@@ -35423,20 +35552,6 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
       "definition": {
         "$type": "Alternatives",
         "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@38"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@39"
-            },
-            "arguments": []
-          },
           {
             "$type": "RuleCall",
             "rule": {
@@ -35448,6 +35563,20 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@41"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@42"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@43"
             },
             "arguments": []
           }
@@ -36029,6 +36158,20 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
             }
           },
           "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "parameters",
+          "type": {
+            "$type": "ArrayType",
+            "elementType": {
+              "$type": "SimpleType",
+              "typeRef": {
+                "$ref": "#/interfaces@15"
+              }
+            }
+          },
+          "isOptional": false
         }
       ],
       "name": "ProcDeclaration",
@@ -36317,13 +36460,13 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         {
           "$type": "TypeAttribute",
           "name": "expression",
+          "isOptional": true,
           "type": {
             "$type": "SimpleType",
             "typeRef": {
               "$ref": "#/interfaces@4"
             }
-          },
-          "isOptional": false
+          }
         }
       ],
       "name": "VarDeclaration",
@@ -36441,11 +36584,11 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         {
           "$type": "TypeAttribute",
           "name": "IntegerValue",
-          "isOptional": true,
           "type": {
             "$type": "SimpleType",
             "primitiveType": "number"
-          }
+          },
+          "isOptional": false
         }
       ],
       "name": "ConstantInt",
@@ -36588,6 +36731,16 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
     },
     {
       "$type": "Interface",
+      "name": "Equality",
+      "superTypes": [
+        {
+          "$ref": "#/interfaces@6"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "$type": "Interface",
       "name": "Greater",
       "superTypes": [
         {
@@ -36635,6 +36788,28 @@ var RobGrammar = () => loadedRobGrammar != null ? loadedRobGrammar : loadedRobGr
         }
       ],
       "attributes": []
+    },
+    {
+      "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "expression",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@4"
+            }
+          },
+          "isOptional": false
+        }
+      ],
+      "name": "Return",
+      "superTypes": [
+        {
+          "$ref": "#/interfaces@3"
+        }
+      ]
     }
   ],
   "types": [
@@ -36778,19 +36953,30 @@ function registerValidationChecks2(services) {
   const registry = services.validation.ValidationRegistry;
   const validator = services.validation.RobValidator;
   const checks = {
-    //Person: validator.checkPersonStartsWithCapital
+    ProcDeclaration: validator.checkFunctionName,
+    Robot: validator.checkMainFunction
   };
   registry.register(checks, validator);
 }
 var RobValidator = class {
-  /*checkPersonStartsWithCapital(person: Robot, accept: ValidationAcceptor): void {
-      if (person.name) {
-          const firstChar = person.name.substring(0, 1);
-          if (firstChar.toUpperCase() !== firstChar) {
-              accept('warning', 'Person name should start with a capital.', { node: person, property: 'name' });
-          }
-      }
-  }*/
+  checkFunctionName(functionDeclaration, accept) {
+    if (!functionDeclaration.name) {
+      accept("warning", "Function name should not be empty.", { node: functionDeclaration, property: "name" });
+    }
+    const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
+    if (!regex.test(functionDeclaration.name)) {
+      accept(
+        "warning",
+        "Function name should start with a _ or a letter. It should not contains special caracters",
+        { node: functionDeclaration, property: "name" }
+      );
+    }
+  }
+  checkMainFunction(functions, accept) {
+    if (!functions.function.find((func) => func.name == "main")) {
+      accept("warning", "There is no main function", { node: functions, property: "function" });
+    }
+  }
 };
 
 // src/semantics/accept-weaver.ts
@@ -36818,7 +37004,9 @@ var RoboMlAcceptWeaver = class {
       ConstantBoolean: this.weaveConstantBoolean,
       Deplacement: this.weaveDeplacement,
       Repeat: this.weaveRepeat,
-      BinaryExpression: this.weaveBinaryExpression
+      BinaryExpression: this.weaveBinaryExpression,
+      ProcCall: this.weaveProcCall,
+      Return: this.weaveReturn
     };
   }
   weaveRobot(node, accept) {
@@ -36904,6 +37092,16 @@ var RoboMlAcceptWeaver = class {
   weaveBinaryExpression(node, accept) {
     node.accept = (visitor2) => {
       return visitor2.visitBinaryExpression(node);
+    };
+  }
+  weaveProcCall(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitProcCall(node);
+    };
+  }
+  weaveReturn(node, accept) {
+    node.accept = (visitor2) => {
+      return visitor2.visitReturn(node);
     };
   }
 };

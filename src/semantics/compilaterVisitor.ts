@@ -1,17 +1,18 @@
-import { AssignationVisitor, BinaryExpressionVisitor, BlockVisitor, CM, ClockNode, ConstInt, ConstantBooleanVisitor, DeplacementVisitor, DistanceCaptor, IfNode, MM, ProcDeclarationVisitor, RepeatVisitor, RobotMLVisitor, RobotVisitor, SpeedNode, ValCallVisitor, VarDeclarationVisitor } from "./visitorNode.js";
+import { AssignationVisitor, BinaryExpressionVisitor, BlockVisitor, CM, ClockNode, ConstInt, ConstantBooleanVisitor, DeplacementVisitor, DistanceCaptor, IfNode, MM, ProcCallVisitor, ProcDeclarationVisitor, RepeatVisitor, ReturnVisitor, RobotMLVisitor, RobotVisitor, SpeedNode, ValCallVisitor, VarDeclarationVisitor } from "./visitorNode.js";
 import * as ASTInterfaces from '../language/generated/ast.js';
+import * as fs from 'fs';
 
 export class CompilaterImplementation implements RobotMLVisitor{
-
-    program: string = "";
+    PathToFile = "../static/defaultArduino.txt";
+    program: string = lireFichierTexte(this.PathToFile) + "\n";
 
     visitRobot(node: RobotVisitor) {
-        node.function.map(func => func.accept(this));
+        node.function.map(func => this.program += func.accept(this));
         return this.program;
     }
     visitProcDeclaration(node: ProcDeclarationVisitor) {
-        this.program += (node.returnedType=="Number"? "integer" : node.returnedType) + " " + node.name + "() {\n";
-        this.program += node.block.statements.map(statement => statement.accept(this)).join('\n') + "}\n";
+        return (node.returnedType === "Number" ? "int" : (node.returnedType === "Boolean" ? "bool" : node.returnedType)) + " " + node.name + "(" + node.parameters.map(param => (param.type=="Number"? "int" : (param.type=="Boolean"? "bool" : param.type)) + " " + param.name).join(', ') + ") {\n"
+        + node.block.statements.map(statement => statement.accept(this)).join('\n') + "}\n";
     }
     visitBlock(node: BlockVisitor) {
         return node.statements.map(stat => stat.accept(this)).join('\n') + "\n";
@@ -38,19 +39,19 @@ export class CompilaterImplementation implements RobotMLVisitor{
         return "DistanceCaptor " + node.unite.accept(this) + "\n";
     }
     visitAssignation(node: AssignationVisitor) {
-        return node.valcall?.vardeclaration?.ref?.name + " = " + node.expression.accept(this) + ";\n";
+        return node.valcall?.vardeclaration?.ref?.name + " = " + node.expression.accept(this) +";";
     }
     visitValCall(node: ValCallVisitor) {
         return node.vardeclaration?.ref?.name;
     }
     visitVarDeclaration(node: VarDeclarationVisitor) {
-        return node.name + " = " + node.expression.accept(this) + ";\n";
+        return (node.type === "Number" ? "int" : (node.type === "Boolean" ? "bool" : node.type)) + " " + node.name + " = " + node.expression.accept(this)+";";
     }
     visitConstantBoolean(node: ConstantBooleanVisitor) {
         return node.value;
     }
     visitDeplacement(node: DeplacementVisitor) {
-        return node.$type + " " + node.mouvement + " " + node.deplacement_value.accept(this) + node.unite.accept(this) + "\n";
+        return "deplacement(" + node.mouvement + " " + node.unite.accept(this) + ");\n";
     }
     visitRepeat(node: RepeatVisitor) {
         return "while(" + node.condition.accept(this) + ") {\n" + node.block.accept(this) + "\n}\n";
@@ -78,6 +79,28 @@ export class CompilaterImplementation implements RobotMLVisitor{
         else if(node.operator.$type == ASTInterfaces.Greater){
             operator = ">";
         }
-        return node.left.accept(this) + " " + operator + " " + node.right.accept(this);
+        else if(node.operator.$type == ASTInterfaces.Equality){
+            operator = "==";
+        }
+        const leftExpression = node.left.accept(this).replace(/;/g, '');
+        const rightExpression = node.right.accept(this).replace(/;/g, '');
+        return leftExpression + " " + operator + " " + rightExpression;
+    }
+    visitProcCall(node: ProcCallVisitor) {
+        return node.procdeclaration.ref?.name + "(" + node.arguments.map(arg => arg.accept(this)).join(', ') + ");"
+    }
+    visitReturn(node: ReturnVisitor) {
+        return "return " + node.expression.accept(this) + ";\n";
+    }
+}
+
+function lireFichierTexte(nomFichier: string): string {
+    try {
+        // Lire le contenu du fichier
+        const contenuFichier = fs.readFileSync(nomFichier, 'utf-8');
+        return contenuFichier;
+    } catch (erreur) {
+        console.error("Erreur lors de la lecture du fichier :", erreur);
+        return '';
     }
 }

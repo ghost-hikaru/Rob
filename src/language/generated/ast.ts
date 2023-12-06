@@ -63,7 +63,7 @@ export function isExpression(item: unknown): item is Expression {
 }
 
 export interface ExpressionType extends AstNode {
-    readonly $type: 'Addition' | 'And' | 'ExpressionType' | 'Greater' | 'Lower' | 'Multiplication' | 'Or' | 'Soustraction';
+    readonly $type: 'Addition' | 'And' | 'Equality' | 'ExpressionType' | 'Greater' | 'Lower' | 'Multiplication' | 'Or' | 'Soustraction';
 }
 
 export const ExpressionType = 'ExpressionType';
@@ -77,6 +77,7 @@ export interface ProcDeclaration extends AstNode {
     readonly $type: 'ProcDeclaration';
     block?: Block
     name: string
+    parameters: Array<VarDeclaration>
     returnedType: Types
 }
 
@@ -98,7 +99,7 @@ export function isRobot(item: unknown): item is Robot {
 }
 
 export interface Statement extends AstNode {
-    readonly $type: 'Assignation' | 'Block' | 'Clock' | 'ControlStructure' | 'CustomAction' | 'Deplacement' | 'If' | 'Repeat' | 'Speed' | 'Statement' | 'VarDeclaration' | 'While';
+    readonly $type: 'Assignation' | 'Block' | 'Clock' | 'ControlStructure' | 'CustomAction' | 'Deplacement' | 'If' | 'Repeat' | 'Return' | 'Speed' | 'Statement' | 'VarDeclaration' | 'While';
 }
 
 export const Statement = 'Statement';
@@ -143,7 +144,7 @@ export function isConstantBoolean(item: unknown): item is ConstantBoolean {
 
 export interface ConstantInt extends Expression {
     readonly $type: 'ConstantInt';
-    IntegerValue?: number
+    IntegerValue: number
 }
 
 export const ConstantInt = 'ConstantInt';
@@ -205,6 +206,16 @@ export const And = 'And';
 
 export function isAnd(item: unknown): item is And {
     return reflection.isInstance(item, And);
+}
+
+export interface Equality extends ExpressionType {
+    readonly $type: 'Equality';
+}
+
+export const Equality = 'Equality';
+
+export function isEquality(item: unknown): item is Equality {
+    return reflection.isInstance(item, Equality);
 }
 
 export interface Greater extends ExpressionType {
@@ -302,9 +313,21 @@ export function isCustomAction(item: unknown): item is CustomAction {
     return reflection.isInstance(item, CustomAction);
 }
 
-export interface VarDeclaration extends Statement {
-    readonly $type: 'VarDeclaration';
+export interface Return extends Statement {
+    readonly $type: 'Return';
     expression: Expression
+}
+
+export const Return = 'Return';
+
+export function isReturn(item: unknown): item is Return {
+    return reflection.isInstance(item, Return);
+}
+
+export interface VarDeclaration extends Statement {
+    readonly $container: ProcDeclaration;
+    readonly $type: 'VarDeclaration';
+    expression?: Expression
     name: string
     type: Types
 }
@@ -429,6 +452,7 @@ export type RobAstType = {
     CustomAction: CustomAction
     Deplacement: Deplacement
     DistanceCaptor: DistanceCaptor
+    Equality: Equality
     Expression: Expression
     ExpressionType: ExpressionType
     Greater: Greater
@@ -440,6 +464,7 @@ export type RobAstType = {
     ProcCall: ProcCall
     ProcDeclaration: ProcDeclaration
     Repeat: Repeat
+    Return: Return
     Robot: Robot
     Sensor: Sensor
     Soustraction: Soustraction
@@ -454,13 +479,14 @@ export type RobAstType = {
 export class RobAstReflection extends AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return ['Addition', 'And', 'Assignation', 'BinaryExpression', 'Block', 'CM', 'Clock', 'ConstantBoolean', 'ConstantInt', 'ControlStructure', 'CustomAction', 'Deplacement', 'DistanceCaptor', 'Expression', 'ExpressionType', 'Greater', 'If', 'Lower', 'MM', 'Multiplication', 'Or', 'ProcCall', 'ProcDeclaration', 'Repeat', 'Robot', 'Sensor', 'Soustraction', 'Speed', 'Statement', 'Unite', 'ValCall', 'VarDeclaration', 'While'];
+        return ['Addition', 'And', 'Assignation', 'BinaryExpression', 'Block', 'CM', 'Clock', 'ConstantBoolean', 'ConstantInt', 'ControlStructure', 'CustomAction', 'Deplacement', 'DistanceCaptor', 'Equality', 'Expression', 'ExpressionType', 'Greater', 'If', 'Lower', 'MM', 'Multiplication', 'Or', 'ProcCall', 'ProcDeclaration', 'Repeat', 'Return', 'Robot', 'Sensor', 'Soustraction', 'Speed', 'Statement', 'Unite', 'ValCall', 'VarDeclaration', 'While'];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
         switch (subtype) {
             case Addition:
             case And:
+            case Equality:
             case Greater:
             case Lower:
             case Multiplication:
@@ -472,6 +498,7 @@ export class RobAstReflection extends AbstractAstReflection {
             case Block:
             case ControlStructure:
             case CustomAction:
+            case Return:
             case VarDeclaration: {
                 return this.isSubtype(Statement, supertype);
             }
@@ -523,6 +550,14 @@ export class RobAstReflection extends AbstractAstReflection {
 
     getTypeMetaData(type: string): TypeMetaData {
         switch (type) {
+            case 'ProcDeclaration': {
+                return {
+                    name: 'ProcDeclaration',
+                    mandatory: [
+                        { name: 'parameters', type: 'array' }
+                    ]
+                };
+            }
             case 'Robot': {
                 return {
                     name: 'Robot',

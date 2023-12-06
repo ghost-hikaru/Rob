@@ -1,12 +1,12 @@
 // Monarch syntax highlighting for the rob language.
 export default {
     keywords: [
-        'ARRIERE','AVANT','Boolean','CM','Clock','DROITE','Deplacement','GAUCHE','If','MM','Number','Repeat','Void','While','and','else','false','fun','getDistanceFromCaptor','or','setSpeed','then','true'
+        'ARRIERE','AVANT','Boolean','CM','Clock','DROITE','Deplacement','GAUCHE','If','MM','Number','Repeat','Void','While','and','else','false','fun','getDistanceFromCaptor','or','return','setSpeed','then','true'
     ],
     operators: [
-        '*','+',',','-',';','<','=','>'
+        '*','+',',','-',';','<','=','==','>'
     ],
-    symbols: /\(|\)|\*|\+|,|-|;|<|=|>|\{|\}/,
+    symbols: /\(|\)|\*|\+|,|-|;|<|=|==|>|\{|\}/,
 
     tokenizer: {
         initial: [
