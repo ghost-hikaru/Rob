@@ -10,7 +10,7 @@
     },
     {
       "name": "keyword.control.rob",
-      "match": "\\b(ARRIERE|AVANT|Addition|And|Boolean|CM|Clock|DROITE|Deplacement|GAUCHE|Greater|If|Lower|MM|Multiplication|Number|Or|Repeat|Soustraction|Void|While|else|false|fun|getDistanceFromCaptor|setSpeed|then|true)\\b"
+      "match": "\\b(ARRIERE|AVANT|Boolean|CM|Clock|DROITE|Deplacement|GAUCHE|If|MM|Number|Repeat|Void|While|and|else|false|fun|getDistanceFromCaptor|or|return|setSpeed|then|true)\\b"
     },
     {
       "name": "string.quoted.double.rob",

@@ -18,25 +18,16 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
         "$ref": "#/interfaces@0"
       },
       "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": "fun"
+        "$type": "Assignment",
+        "feature": "function",
+        "operator": "+=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@5"
           },
-          {
-            "$type": "Assignment",
-            "feature": "functions",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@5"
-              },
-              "arguments": []
-            }
-          }
-        ],
+          "arguments": []
+        },
         "cardinality": "*"
       },
       "definesHiddenTokens": false,
@@ -124,6 +115,13 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
                 "$type": "RuleCall",
                 "rule": {
                   "$ref": "#/rules@19"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@38"
                 },
                 "arguments": []
               }
@@ -214,14 +212,14 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@34"
+              "$ref": "#/rules@35"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@35"
+              "$ref": "#/rules@36"
             },
             "arguments": []
           }
@@ -281,14 +279,21 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@31"
+              "$ref": "#/rules@32"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@32"
+              "$ref": "#/rules@33"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@31"
             },
             "arguments": []
           }
@@ -310,6 +315,10 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "definition": {
         "$type": "Group",
         "elements": [
+          {
+            "$type": "Keyword",
+            "value": "fun"
+          },
           {
             "$type": "Assignment",
             "feature": "returnedType",
@@ -333,6 +342,42 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
               },
               "arguments": []
             }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "("
+              },
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Assignment",
+                    "feature": "parameters",
+                    "operator": "+=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@18"
+                      },
+                      "arguments": []
+                    }
+                  },
+                  {
+                    "$type": "Keyword",
+                    "value": ",",
+                    "cardinality": "?"
+                  }
+                ],
+                "cardinality": "*"
+              },
+              {
+                "$type": "Keyword",
+                "value": ")"
+              }
+            ]
           },
           {
             "$type": "Assignment",
@@ -424,14 +469,14 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@44"
+              "$ref": "#/rules@46"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@42"
+              "$ref": "#/rules@44"
             },
             "arguments": []
           }
@@ -796,7 +841,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@37"
+                "$ref": "#/rules@39"
               },
               "arguments": []
             }
@@ -938,20 +983,26 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
             }
           },
           {
-            "$type": "Keyword",
-            "value": "="
-          },
-          {
-            "$type": "Assignment",
-            "feature": "expression",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@2"
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "="
               },
-              "arguments": []
-            }
+              {
+                "$type": "Assignment",
+                "feature": "expression",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@2"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
           }
         ]
       },
@@ -1083,7 +1134,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@33"
+            "$ref": "#/rules@34"
           },
           "arguments": []
         }
@@ -1124,12 +1175,12 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
             }
           },
           {
+            "$type": "Keyword",
+            "value": "("
+          },
+          {
             "$type": "Group",
             "elements": [
-              {
-                "$type": "Keyword",
-                "value": "("
-              },
               {
                 "$type": "Assignment",
                 "feature": "arguments",
@@ -1231,15 +1282,14 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "definition": {
         "$type": "Assignment",
         "feature": "value",
-        "operator": "?=",
+        "operator": "=",
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@36"
+            "$ref": "#/rules@37"
           },
           "arguments": []
-        },
-        "cardinality": "?"
+        }
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -1297,7 +1347,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           },
           {
             "$type": "Keyword",
-            "value": "Addition"
+            "value": "+"
           }
         ]
       },
@@ -1325,7 +1375,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           },
           {
             "$type": "Keyword",
-            "value": "Soustraction"
+            "value": "-"
           }
         ]
       },
@@ -1353,7 +1403,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           },
           {
             "$type": "Keyword",
-            "value": "Multiplication"
+            "value": "*"
           }
         ]
       },
@@ -1381,7 +1431,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           },
           {
             "$type": "Keyword",
-            "value": "Lower"
+            "value": "<"
           }
         ]
       },
@@ -1396,6 +1446,34 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "$type": "ParserRule",
       "name": "Greater",
       "returnType": {
+        "$ref": "#/interfaces@29"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Action",
+            "type": {
+              "$ref": "#/interfaces@29"
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": ">"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Equality",
+      "returnType": {
         "$ref": "#/interfaces@28"
       },
       "definition": {
@@ -1409,7 +1487,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           },
           {
             "$type": "Keyword",
-            "value": "Greater"
+            "value": "=="
           }
         ]
       },
@@ -1424,7 +1502,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "$type": "ParserRule",
       "name": "And",
       "returnType": {
-        "$ref": "#/interfaces@29"
+        "$ref": "#/interfaces@30"
       },
       "definition": {
         "$type": "Group",
@@ -1432,12 +1510,12 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@29"
+              "$ref": "#/interfaces@30"
             }
           },
           {
             "$type": "Keyword",
-            "value": "And"
+            "value": "and"
           }
         ]
       },
@@ -1452,7 +1530,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "$type": "ParserRule",
       "name": "Or",
       "returnType": {
-        "$ref": "#/interfaces@30"
+        "$ref": "#/interfaces@31"
       },
       "definition": {
         "$type": "Group",
@@ -1460,12 +1538,12 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@30"
+              "$ref": "#/interfaces@31"
             }
           },
           {
             "$type": "Keyword",
-            "value": "Or"
+            "value": "or"
           }
         ]
       },
@@ -1491,7 +1569,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@43"
+              "$ref": "#/rules@45"
             },
             "arguments": []
           }
@@ -1508,7 +1586,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "$type": "ParserRule",
       "name": "MM",
       "returnType": {
-        "$ref": "#/interfaces@31"
+        "$ref": "#/interfaces@32"
       },
       "definition": {
         "$type": "Group",
@@ -1516,7 +1594,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@31"
+              "$ref": "#/interfaces@32"
             }
           },
           {
@@ -1536,7 +1614,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "$type": "ParserRule",
       "name": "CM",
       "returnType": {
-        "$ref": "#/interfaces@32"
+        "$ref": "#/interfaces@33"
       },
       "definition": {
         "$type": "Group",
@@ -1544,7 +1622,7 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@32"
+              "$ref": "#/interfaces@33"
             }
           },
           {
@@ -1586,6 +1664,40 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
     },
     {
       "$type": "ParserRule",
+      "name": "Return",
+      "returnType": {
+        "$ref": "#/interfaces@34"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "return"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "expression",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@2"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "Mouvement",
       "returnType": {
         "$ref": "#/types@4"
@@ -1593,20 +1705,6 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "definition": {
         "$type": "Alternatives",
         "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@38"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@39"
-            },
-            "arguments": []
-          },
           {
             "$type": "RuleCall",
             "rule": {
@@ -1618,6 +1716,20 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@41"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@42"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@43"
             },
             "arguments": []
           }
@@ -2150,11 +2262,14 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
       "attributes": [
         {
           "$type": "TypeAttribute",
-          "name": "functions",
+          "name": "function",
           "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@1"
+            "$type": "ArrayType",
+            "elementType": {
+              "$type": "SimpleType",
+              "typeRef": {
+                "$ref": "#/interfaces@1"
+              }
             }
           },
           "isOptional": false
@@ -2193,6 +2308,20 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
             "$type": "SimpleType",
             "typeRef": {
               "$ref": "#/types@0"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "parameters",
+          "type": {
+            "$type": "ArrayType",
+            "elementType": {
+              "$type": "SimpleType",
+              "typeRef": {
+                "$ref": "#/interfaces@15"
+              }
             }
           },
           "isOptional": false
@@ -2484,13 +2613,13 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
         {
           "$type": "TypeAttribute",
           "name": "expression",
+          "isOptional": true,
           "type": {
             "$type": "SimpleType",
             "typeRef": {
               "$ref": "#/interfaces@4"
             }
-          },
-          "isOptional": false
+          }
         }
       ],
       "name": "VarDeclaration",
@@ -2608,11 +2737,11 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
         {
           "$type": "TypeAttribute",
           "name": "IntegerValue",
-          "isOptional": true,
           "type": {
             "$type": "SimpleType",
             "primitiveType": "number"
-          }
+          },
+          "isOptional": false
         }
       ],
       "name": "ConstantInt",
@@ -2755,6 +2884,16 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
     },
     {
       "$type": "Interface",
+      "name": "Equality",
+      "superTypes": [
+        {
+          "$ref": "#/interfaces@6"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "$type": "Interface",
       "name": "Greater",
       "superTypes": [
         {
@@ -2802,6 +2941,28 @@ export const RobGrammar = () => loadedRobGrammar !== null && loadedRobGrammar !=
         }
       ],
       "attributes": []
+    },
+    {
+      "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "expression",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@4"
+            }
+          },
+          "isOptional": false
+        }
+      ],
+      "name": "Return",
+      "superTypes": [
+        {
+          "$ref": "#/interfaces@3"
+        }
+      ]
     }
   ],
   "types": [

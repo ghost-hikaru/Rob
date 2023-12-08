@@ -76,6 +76,10 @@ export const And = 'And';
 export function isAnd(item) {
     return reflection.isInstance(item, And);
 }
+export const Equality = 'Equality';
+export function isEquality(item) {
+    return reflection.isInstance(item, Equality);
+}
 export const Greater = 'Greater';
 export function isGreater(item) {
     return reflection.isInstance(item, Greater);
@@ -111,6 +115,10 @@ export function isControlStructure(item) {
 export const CustomAction = 'CustomAction';
 export function isCustomAction(item) {
     return reflection.isInstance(item, CustomAction);
+}
+export const Return = 'Return';
+export function isReturn(item) {
+    return reflection.isInstance(item, Return);
 }
 export const VarDeclaration = 'VarDeclaration';
 export function isVarDeclaration(item) {
@@ -154,12 +162,13 @@ export function isSpeed(item) {
 }
 export class RobAstReflection extends AbstractAstReflection {
     getAllTypes() {
-        return ['Addition', 'And', 'Assignation', 'BinaryExpression', 'Block', 'CM', 'Clock', 'ConstantBoolean', 'ConstantInt', 'ControlStructure', 'CustomAction', 'Deplacement', 'DistanceCaptor', 'Expression', 'ExpressionType', 'Greater', 'If', 'Lower', 'MM', 'Multiplication', 'Or', 'ProcCall', 'ProcDeclaration', 'Repeat', 'Robot', 'Sensor', 'Soustraction', 'Speed', 'Statement', 'Unite', 'ValCall', 'VarDeclaration', 'While'];
+        return ['Addition', 'And', 'Assignation', 'BinaryExpression', 'Block', 'CM', 'Clock', 'ConstantBoolean', 'ConstantInt', 'ControlStructure', 'CustomAction', 'Deplacement', 'DistanceCaptor', 'Equality', 'Expression', 'ExpressionType', 'Greater', 'If', 'Lower', 'MM', 'Multiplication', 'Or', 'ProcCall', 'ProcDeclaration', 'Repeat', 'Return', 'Robot', 'Sensor', 'Soustraction', 'Speed', 'Statement', 'Unite', 'ValCall', 'VarDeclaration', 'While'];
     }
     computeIsSubtype(subtype, supertype) {
         switch (subtype) {
             case Addition:
             case And:
+            case Equality:
             case Greater:
             case Lower:
             case Multiplication:
@@ -171,6 +180,7 @@ export class RobAstReflection extends AbstractAstReflection {
             case Block:
             case ControlStructure:
             case CustomAction:
+            case Return:
             case VarDeclaration: {
                 return this.isSubtype(Statement, supertype);
             }
@@ -220,6 +230,22 @@ export class RobAstReflection extends AbstractAstReflection {
     }
     getTypeMetaData(type) {
         switch (type) {
+            case 'ProcDeclaration': {
+                return {
+                    name: 'ProcDeclaration',
+                    mandatory: [
+                        { name: 'parameters', type: 'array' }
+                    ]
+                };
+            }
+            case 'Robot': {
+                return {
+                    name: 'Robot',
+                    mandatory: [
+                        { name: 'function', type: 'array' }
+                    ]
+                };
+            }
             case 'ConstantBoolean': {
                 return {
                     name: 'ConstantBoolean',

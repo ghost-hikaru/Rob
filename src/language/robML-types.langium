@@ -11,13 +11,14 @@ type Mouvement_DROITE = 'DROITE';
 type Mouvement_GAUCHE = 'GAUCHE';
 
 interface Robot {
-	functions: ProcDeclaration
+	function: ProcDeclaration[]
 }
 
 interface ProcDeclaration {
 	block?: Block
 	name: string
 	returnedType: Types
+	parameters: VarDeclaration[]
 }
 
 interface Block extends Statement {
@@ -74,7 +75,7 @@ interface Speed extends CustomAction {
 interface VarDeclaration extends Statement {
 	name: string
 	^type: Types
-	expression: Expression
+	expression?: Expression
 }
 
 interface Assignation extends Statement {
@@ -93,7 +94,7 @@ interface BinaryExpression extends Expression {
 }
 
 interface ConstantInt extends Expression {
-	IntegerValue?: number
+	IntegerValue: number
 }
 
 interface ProcCall extends Expression {
@@ -124,6 +125,9 @@ interface Multiplication extends ExpressionType {
 interface Lower extends ExpressionType {
 }
 
+interface Equality extends ExpressionType {
+}
+
 interface Greater extends ExpressionType {
 }
 
@@ -137,5 +141,9 @@ interface MM extends Unite {
 }
 
 interface CM extends Unite {
+}
+
+interface Return extends Statement {
+	expression: Expression
 }
 

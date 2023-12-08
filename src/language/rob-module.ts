@@ -2,6 +2,7 @@ import type { DefaultSharedModuleContext, LangiumServices, LangiumSharedServices
 import { createDefaultModule, createDefaultSharedModule, inject } from 'langium';
 import { RobGeneratedModule, RobGeneratedSharedModule } from './generated/module.js';
 import { RobValidator, registerValidationChecks } from './rob-validator.js';
+import { weaveAcceptMethods } from '../semantics/accept-weaver.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -59,5 +60,6 @@ export function createRobServices(context: DefaultSharedModuleContext): {
     );
     shared.ServiceRegistry.register(Rob);
     registerValidationChecks(Rob);
+    weaveAcceptMethods(Rob);
     return { shared, Rob };
 }

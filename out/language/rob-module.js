@@ -1,6 +1,7 @@
 import { createDefaultModule, createDefaultSharedModule, inject } from 'langium';
 import { RobGeneratedModule, RobGeneratedSharedModule } from './generated/module.js';
 import { RobValidator, registerValidationChecks } from './rob-validator.js';
+import { weaveAcceptMethods } from '../semantics/accept-weaver.js';
 /**
  * Dependency injection module that overrides Langium default services and contributes the
  * declared custom services. The Langium defaults can be partially specified to override only
@@ -31,6 +32,7 @@ export function createRobServices(context) {
     const Rob = inject(createDefaultModule({ shared }), RobGeneratedModule, RobModule);
     shared.ServiceRegistry.register(Rob);
     registerValidationChecks(Rob);
+    weaveAcceptMethods(Rob);
     return { shared, Rob };
 }
 //# sourceMappingURL=rob-module.js.map
