@@ -63,11 +63,26 @@ void setup() {
 }
 
 void setSpeed(int speed){
-  Omni.wheelLLSetSpeedMMPS(speed);
+  Omni.setCarSpeedMMPS(speed, 100000);
 }
 
 void deplacement(String movement, int value){
-  Omni.setCarAdvance(value);
+  if(movement="AVANT"){
+    Omni.setCarAdvance(value);
+  }
+  else if(movement="ARRIERE"){
+    Omni.setCarBackoff(value);
+  }
+  else if(movement="GAUCHE"){
+    Omni.setCarLeft(value);
+  }
+  else if(movement="DROITE"){
+    Omni.setCarRight(value);
+  }
+}
+
+void clock(int value){
+  Omni.delayMS(value);
 }
 
 double distanceCaptor(int unite){
