@@ -58,10 +58,21 @@ const parseAndValidate = (async () => {
     // To implement
 });
 
+const resetSimulation = (async () => {
+    console.info('Reset robot position...');
+    // To implement
+});
+
+const setup = (async () => {
+    console.info('clean cache and monaco ...');
+    // To implement
+});
+
 const execute = (async () => {
     console.info('running current code...');
     client.getLanguageClient().sendNotification('browser/execute', { content: client.getEditor().getModel().getValue() });
 });
+
 
 const setupSimulator = (scene) => {
     console.log("Scene : ",scene);
