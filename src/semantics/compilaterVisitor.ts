@@ -39,7 +39,7 @@ export class CompilaterImplementation implements RobotMLVisitor{
         return "if(" + node.condition.accept(this) + ") {\n" + node.then.accept(this) + "\n}\n" + (node.else ? "else {\n" + node.else.accept(this) + "\n}\n" : "");
     }
     visitClock(node: ClockNode) {
-        return "Clock " + node.time.accept(this) + ";\n";
+        return "rotate(" + node.time.accept(this) + ");\n";
     }
     visitConstInt(node: ConstInt) {
         return node.IntegerValue;

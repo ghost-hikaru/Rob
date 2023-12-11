@@ -7,6 +7,7 @@
 #include <MotorWheel.h>
 #include <Omni4WD.h>
 
+#define SPEED_ROT PI/2
 //#include <fuzzy_table.h>
 //#include <PID_Beta6.h>
 
@@ -69,19 +70,29 @@ void setSpeed(int speed){
 void deplacement(String movement, int value){
   if(movement="AVANT"){
     Omni.setCarAdvance(value);
+    Omni.delayMS(1000);
+    Omni.setCarStop();
   }
   else if(movement="ARRIERE"){
     Omni.setCarBackoff(value);
+    Omni.delayMS(1000);
+    Omni.setCarStop();
   }
   else if(movement="GAUCHE"){
-    Omni.setCarLeft(value);
+    float rad = (value * PI) / 180;
+    Omni.setCarRotate(SPEED_ROT);
+    Omni.delayMS(1000*rad/SPEED_ROT);
+    Omni.setCarStop();
   }
   else if(movement="DROITE"){
-    Omni.setCarRight(value);
+    float rad = (value * PI) / 180;
+    Omni.setCarRotate(SPEED_ROT);
+    Omni.delayMS(1000*rad/SPEED_ROT);
+    Omni.setCarStop();
   }
 }
 
-void clock(int value){
+void rotate(int value){
   Omni.delayMS(value);
 }
 
