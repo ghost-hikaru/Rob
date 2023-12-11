@@ -16,10 +16,11 @@ fun Number procedure(Number Melvin, Boolean Enzo) {
         Melvin = (Melvin + 1);
     };
 }
-fun Void main(){
+fun Void mainCode(){
     /*Number testVar = 8;*/
     /*procedure(2, 1);*/
     Number testReturn = (Un() + Deux());
+    Deplacement(AVANT, 10, CM);
     print(testReturn);
 }
 

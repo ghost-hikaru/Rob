@@ -12,25 +12,25 @@ editorConfig.setMainLanguageId('rob');       // WARNING Dependent of your projec
 
 editorConfig.setMonarchTokensProvider(monarchSyntax);
 
-let code = `let void entry () {
-    var number count = 0
-    loop count < 5
+let code = `fun Void mainCode () {
+    Number count = 0;
+    Repeat((count < 5))
     {	
-        setSpeed(500 * (count + 1))
-        count = count + 1
-        square(count)
-    }
+        setSpeed( (500 * (count + 1) ), CM);
+        count = (count + 1);
+        square(count);
+    };
 }
 
-let void square(number factor){
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
+fun Void square(Number count){
+    Deplacement(AVANT, (500 + count), CM);
+    Clock(90);
+    Deplacement(AVANT, (500 + count), CM);
+    Clock(90);
+    Deplacement(AVANT, (500 + count), CM);
+    Clock(90);
+    Deplacement(AVANT, (500 + count), CM);
+    Clock(90);
 }`
 
 editorConfig.setMainCode(code);
@@ -60,10 +60,11 @@ const parseAndValidate = (async () => {
 
 const execute = (async () => {
     console.info('running current code...');
-    // To implement
+    client.getLanguageClient().sendNotification('browser/execute', { content: client.getEditor().getModel().getValue() });
 });
 
 const setupSimulator = (scene) => {
+    console.log("Scene : ",scene);
     const wideSide = max(scene.size.x, scene.size.y);
     let factor = 1000 / wideSide;
 
@@ -100,6 +101,7 @@ const setupSimulator = (scene) => {
 
 window.execute = execute;
 window.typecheck = typecheck;
+//window.setup = setupSimulator;
 
 var errorModal = document.getElementById("errorModal");
 var validModal = document.getElementById("validModal");
@@ -132,3 +134,19 @@ client.setWorker(lsWorker);
 // keep a reference to a promise for when the editor is finished starting, we'll use this to setup the canvas on load
 const startingPromise = client.startEditor(document.getElementById("monaco-editor-root"));
 
+client.getLanguageClient().onNotification('browser/sendStatements', async (params) => {
+    console.log(params);
+    for (let i = 0; i < params.length; i++) {
+        const statement = params[i];
+        if (statement.type === "Forward") {
+            await window.p5robot.move(statement.Value);
+        }
+
+        if (statement.type === "Rotate") {
+            console.log(statement.Value);
+            window.p5robot.turn(statement.Value * 1);
+        }
+        await new Promise(r => setTimeout(r, 1000));
+    }
+
+});

@@ -1,9 +1,17 @@
 import { AssignationVisitor, BinaryExpressionVisitor, BlockVisitor, CM, ClockNode, ConstInt, ConstantBooleanVisitor, DeplacementVisitor, DistanceCaptor, IfNode, MM, ProcCallVisitor, ProcDeclarationVisitor, RepeatVisitor, ReturnVisitor, RobotMLVisitor, RobotVisitor, SpeedNode, ValCallVisitor, VarDeclarationVisitor } from "./visitorNode.js";
 import * as ASTInterfaces from '../language/generated/ast.js';
-
+export class Statment{
+    type : string;
+    value : number;
+    constructor(type : string, value : number){
+        this.type = type;
+        this.value = value;
+    }
+}
 export class InterpreterImplementation implements RobotMLVisitor{
     StackList: Map<String, any>[] = [new Map<String, any>()];
     originalNode : any;
+    StatmentList : Statment[] = [];
 
     visitReturn(node: ReturnVisitor) {
         return node.expression.accept(this);
@@ -70,7 +78,9 @@ export class InterpreterImplementation implements RobotMLVisitor{
         }
     }
     visitDeplacement(node: DeplacementVisitor) {
-        return [node.$type, node.deplacement_value.accept(this), node.mouvement, node.unite.accept(this)].flat();
+        if (node.mouvement !== undefined) {
+            this.StatmentList.push(new Statment(node.mouvement, node.deplacement_value.accept(this)));
+        }
     }
     visitConstantBoolean(node: ConstantBooleanVisitor): boolean {
         return (node.value as unknown as string)=='true';
@@ -129,7 +139,8 @@ export class InterpreterImplementation implements RobotMLVisitor{
         const mainFunction = node.function
         .filter(func => func.name === "mainCode")[0];
         mainFunction.accept(this);
-        return "end of file";
+        console.log("end of file");
+        return this.StatmentList;
     }
 
     visitBlock(node: BlockVisitor): any {
@@ -147,7 +158,7 @@ export class InterpreterImplementation implements RobotMLVisitor{
     }
 
     visitClock(node: ClockNode) {
-        return ("Clock " + node.time.accept(this));
+        this.StatmentList.push(new Statment("Clock", node.time.accept(this)));
     }
 
     seachVariable(name : string) : any{

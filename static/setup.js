@@ -12,25 +12,26 @@ editorConfig.setMainLanguageId('rob');       // WARNING Dependent of your projec
 
 editorConfig.setMonarchTokensProvider(monarchSyntax);
 
-let code = `let void entry () {
-    var number count = 0
-    loop count < 5
+let code = `
+fun Void mainCode () {
+    Number count = 0;
+    Repeat((count < 5))
     {	
-        setSpeed(500 * (count + 1))
-        count = count + 1
-        square(count)
-    }
+        setSpeed( (500 * (count + 1) ), CM);
+        count = (count + 1);
+        square(count);
+    };
 }
 
-let void square(number factor){
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
+fun Void square(Number count){
+    Deplacement(AVANT, (500 + count), CM);
+    Clock(90);
+    Deplacement(AVANT, (500 + count), CM);
+    Clock(90);
+    Deplacement(AVANT, (500 + count), CM);
+    Clock(90);
+    Deplacement(AVANT, (500 + count), CM);
+    Clock(90);
 }`
 
 editorConfig.setMainCode(code);
