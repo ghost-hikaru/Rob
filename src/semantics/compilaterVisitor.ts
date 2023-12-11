@@ -54,7 +54,7 @@ export class CompilaterImplementation implements RobotMLVisitor{
         return "* 0.001";
     }
     visitDistanceCaptor(node: DistanceCaptor) {
-        return "DistanceCaptor " + node.unite.accept(this) + "\n";
+        return "distanceCaptor(" + node.unite.accept(this) + ")\n";
     }
     visitAssignation(node: AssignationVisitor) {
         return node.valcall?.vardeclaration?.ref?.name + " = " + node.expression.accept(this) +";";
