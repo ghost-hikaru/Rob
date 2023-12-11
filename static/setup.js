@@ -60,7 +60,7 @@ const parseAndValidate = (async () => {
 
 const execute = (async () => {
     console.info('running current code...');
-    // To implement
+    client.getLanguageClient().sendNotification('browser/execute', { content: client.getEditor().getModel().getValue() });
 });
 
 const setupSimulator = (scene) => {
@@ -100,7 +100,7 @@ const setupSimulator = (scene) => {
 
 window.execute = execute;
 window.typecheck = typecheck;
-
+window.setup = setupSimulator;
 var errorModal = document.getElementById("errorModal");
 var validModal = document.getElementById("validModal");
 var closeError = document.querySelector("#errorModal .close");
@@ -120,7 +120,7 @@ window.onclick = function(event) {
     }
   } 
 
-const workerURL = new URL('./rob-server-worker.js', import.meta.url); // WARNING Dependent of your project
+const workerURL = new URL('../public/rob-server-worker.js', import.meta.url); // WARNING Dependent of your project
 console.log(workerURL.href);
 
 const lsWorker = new Worker(workerURL.href, {
@@ -131,4 +131,21 @@ client.setWorker(lsWorker);
 
 // keep a reference to a promise for when the editor is finished starting, we'll use this to setup the canvas on load
 const startingPromise = client.startEditor(document.getElementById("monaco-editor-root"));
+
+client.getLanguageClient().onNotification('browser/sendStatements', async (params) => {
+    console.log(params);
+    for (let i = 0; i < params.length; i++) {
+        const statement = params[i];
+        if (statement.type === "Forward") {
+            await window.p5robot.move(statement.Value);
+        }
+
+        if (statement.type === "Rotate") {
+            console.log(statement.Value);
+            window.p5robot.turn(statement.Value * 1);
+        }
+        await new Promise(r => setTimeout(r, 1000));
+    }
+
+});
 

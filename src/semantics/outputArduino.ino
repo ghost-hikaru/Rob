@@ -67,30 +67,11 @@ void setSpeed(int speed){
 }
 
 void deplacement(string movement, int value){
-  if(movement=="AVANT"){
-    Omni.wheelLLSetSpeedMMPS(value);
-    Omni.wheelLRSetSpeedMMPS(value);
-    Omni.wheelRLSetSpeedMMPS(value);
-    Omni.wheelRRSetSpeedMMPS(value);
-  }
-  else if(movement=="ARRIERE"){
-    Omni.wheelLLSetSpeedMMPS(-value);
-    Omni.wheelLRSetSpeedMMPS(-value);
-    Omni.wheelRLSetSpeedMMPS(-value);
-    Omni.wheelRRSetSpeedMMPS(-value);
-  }
-  else if(movement=="GAUCHE"){
-    Omni.wheelLLSetSpeedMMPS(-value);
-    Omni.wheelLRSetSpeedMMPS(value);
-    Omni.wheelRLSetSpeedMMPS(value);
-    Omni.wheelRRSetSpeedMMPS(-value);
-  }
-  else if(movement=="DROITE"){
-    Omni.wheelLLSetSpeedMMPS(value);
-    Omni.wheelLRSetSpeedMMPS(-value);
-    Omni.wheelRLSetSpeedMMPS(-value);
-    Omni.wheelRRSetSpeedMMPS(value);
-  }
+  Omni.setCarAdvance(value);
+}
+
+double distanceCaptor(int unite){
+  return 100*unite;
 }
 
 void loop() {

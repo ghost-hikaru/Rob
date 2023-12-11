@@ -127,7 +127,7 @@ export class InterpreterImplementation implements RobotMLVisitor{
     visitRobot(node : RobotVisitor) : any{
         this.originalNode = node;
         const mainFunction = node.function
-        .filter(func => func.name === "main")[0];
+        .filter(func => func.name === "mainCode")[0];
         mainFunction.accept(this);
         return "end of file";
     }
