@@ -1,4 +1,5 @@
 class Robot {
+    
     constructor(factor, _x = 0, _y = 0, _width = 50, _height = 75, _angle = 0) {
         this.factor = factor;
         // x and y represent the center of the robot
@@ -7,6 +8,7 @@ class Robot {
         this.angle = _angle;
         this.width = _width;
         this.height = _height;
+        this.tableau_position = [{'x':x,'y':y}];
     }
   
     show() {
@@ -40,6 +42,8 @@ class Robot {
         let anglesin = sin(this.angle);
         this.x += anglecos*dist;
         this.y += anglesin*dist;
+
+        position.push({'x':x,'y':y});
     }
 
     side(dist){
@@ -47,5 +51,9 @@ class Robot {
         let anglesin = sin(this.angle);
         this.x += -anglesin*dist;
         this.y += anglecos*dist;
+    }
+
+    exportTab(){
+        return this.tableau_position;
     }
   }
