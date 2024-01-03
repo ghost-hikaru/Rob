@@ -5,7 +5,7 @@ Ce rapport présente nos travaux sur la création d'un langage de programmation 
 # I/ Création du modèle du langage
 
 Le langage a été modélisé en utilisant ECORE sur Eclipse. Celui est basé sur l'idée suivante : 
-Un Robot peut posséder plusieurs déclaration de fonction appelée ProcDeclaration. Au sein d'une déclaration de fonction peut exister un Block, composé de Statements qui peuvent être des ControlStructure, des CustomAction, ou des Expressions.``
+Un Robot peut posséder plusieurs déclaration de fonction appelée ProcDeclaration. Au sein d'une déclaration de fonction peut exister un Block, composé de Statements qui peuvent être des ControlStructure, des CustomAction, ou des Expressions.
 
 ## ControlStructure
 Les controlStructures sont des éléments représentant les structures de contrôle du langage à partir d'une condition Booléenne. Il a été décidé d'implémenter deux types de controlStructures dans notre langage : le repeat, et le if.
