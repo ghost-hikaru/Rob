@@ -7,6 +7,7 @@
 #include <MotorWheel.h>
 #include <Omni4WD.h>
 
+#define SPEED_ROT PI/2
 //#include <fuzzy_table.h>
 //#include <PID_Beta6.h>
 
@@ -55,79 +56,76 @@ MotorWheel wheel4(10, 7, 18, 19, &irq4);
 Omni4WD Omni(&wheel1, &wheel2, &wheel3, &wheel4);
 
 void setup() {
-  //TCCR0B=TCCR0B&0xf8|0x01;    // warning!! it will change millis()
+  TCCR0B=TCCR0B&0xf8|0x01;    // warning!! it will change millis()
   TCCR1B = TCCR1B & 0xf8 | 0x01; // Pin9,Pin10 PWM 31250Hz
-  TCCR2B = TCCR2B & 0xf8 | 0x01; // Pin3,Pin11 PWM 31250Hz
+  //TCCR2B = TCCR2B & 0xf8 | 0x01; // Pin3,Pin11 PWM 31250Hz
 
   Omni.PIDEnable(0.31, 0.01, 0, 10);
 }
 
 void setSpeed(int speed){
-  Omni.wheelLLSetSpeedMMPS(speed);
+  Omni.setCarSpeedMMPS(speed, 100000);
 }
 
-void deplacement(string movement, int value){
-  if(movement=="AVANT"){
-    Omni.wheelLLSetSpeedMMPS(value);
-    Omni.wheelLRSetSpeedMMPS(value);
-    Omni.wheelRLSetSpeedMMPS(value);
-    Omni.wheelRRSetSpeedMMPS(value);
+void deplacement(String movement, int value){
+  if(movement="AVANT"){
+    Omni.setCarAdvance(value);
+    Omni.delayMS(1000);
+    Omni.setCarStop();
   }
-  else if(movement=="ARRIERE"){
-    Omni.wheelLLSetSpeedMMPS(-value);
-    Omni.wheelLRSetSpeedMMPS(-value);
-    Omni.wheelRLSetSpeedMMPS(-value);
-    Omni.wheelRRSetSpeedMMPS(-value);
+  else if(movement="ARRIERE"){
+    Omni.setCarBackoff(value);
+    Omni.delayMS(1000);
+    Omni.setCarStop();
   }
-  else if(movement=="GAUCHE"){
-    Omni.wheelLLSetSpeedMMPS(-value);
-    Omni.wheelLRSetSpeedMMPS(value);
-    Omni.wheelRLSetSpeedMMPS(value);
-    Omni.wheelRRSetSpeedMMPS(-value);
+  else if(movement="GAUCHE"){
+    float rad = (value * PI) / 180;
+    Omni.setCarRotate(SPEED_ROT);
+    Omni.delayMS(1000*rad/SPEED_ROT);
+    Omni.setCarStop();
   }
-  else if(movement=="DROITE"){
-    Omni.wheelLLSetSpeedMMPS(value);
-    Omni.wheelLRSetSpeedMMPS(-value);
-    Omni.wheelRLSetSpeedMMPS(-value);
-    Omni.wheelRRSetSpeedMMPS(value);
+  else if(movement="DROITE"){
+    float rad = (value * PI) / 180;
+    Omni.setCarRotate(SPEED_ROT);
+    Omni.delayMS(1000*rad/SPEED_ROT);
+    Omni.setCarStop();
   }
+}
+
+void rotate(int value){
+  Omni.delayMS(value);
+}
+
+double distanceCaptor(int unite){
+  return 100*unite;
 }
 
 void loop() {
-  main();
+  mainCode();
 }
 
-int procedure(int Melvin, bool Enzo) {
-if(Melvin > Enzo && Melvin == 2 && Melvin < 10) {
-int Distance = 80;
-Distance = Distance + 3;
-print(Distance);
+void square() {
+deplacement(AVANT,150** 0.01);
+
+rotate(9000);
+
+deplacement(GAUCHE,150** 0.01);
+
+rotate(9000);
+
+deplacement(DROITE,150** 0.01);
+
+rotate(9000);
+
+deplacement(ARRIERE,150** 0.01);
+
+rotate(9000);
+}
+void mainCode() {
+int count = 0;
+while(count < 5) {
+count = count + 1;
+square();
 
 }
-else {
-int Distance = 78;
-Distance = Distance + 3;
-print(Distance);
-
-}
-
-while(Melvin < 10) {
-print(Melvin);
-Melvin = Melvin + 1;
-
-}
-}
-void main() {
-int testReturn = Un() + Deux();
-print(testReturn);}
-int Un() {
-int test = 10;
-bool test2 = true;
-print(test);
-return 1;
-}
-int Deux() {
-return 2;
-}
-void print() {
 }

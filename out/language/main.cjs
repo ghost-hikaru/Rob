@@ -1,4 +1,3 @@
-"use strict";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -36973,8 +36972,8 @@ var RobValidator = class {
     }
   }
   checkMainFunction(functions, accept) {
-    if (!functions.function.find((func) => func.name == "main")) {
-      accept("warning", "There is no main function", { node: functions, property: "function" });
+    if (!functions.function.find((func) => func.name == "mainCode")) {
+      accept("warning", "There is no mainCode function", { node: functions, property: "function" });
     }
   }
 };

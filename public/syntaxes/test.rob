@@ -1,0 +1,37 @@
+fun Number procedure(Number Melvin, Boolean Enzo) {
+    If((((Melvin > Enzo) and (Melvin == 2)) and (Melvin <10))){
+        then{
+            Number Distance = 80;
+            Distance = (Distance + 3);
+            print(Distance);
+        }
+        else{
+            Number Distance = 78;
+            Distance = (Distance + 3);
+            print(Distance);
+        }
+    };
+    Repeat((Melvin<10)){
+        print(Melvin);
+        Melvin = (Melvin + 1);
+    };
+}
+fun Void main(){
+    /*Number testVar = 8;*/
+    /*procedure(2, 1);*/
+    Number testReturn = (Un() + Deux());
+    print(testReturn);
+}
+
+fun Number Un(){
+    Number test = 10;
+    Boolean test2 = true;
+    print(test);
+    return 1;
+}
+
+fun Number Deux(){
+    return 2;
+}
+fun Void print(){
+}

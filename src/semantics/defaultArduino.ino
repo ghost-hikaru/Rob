@@ -7,6 +7,7 @@
 #include <MotorWheel.h>
 #include <Omni4WD.h>
 
+#define SPEED_ROT PI/2
 //#include <fuzzy_table.h>
 //#include <PID_Beta6.h>
 
@@ -55,19 +56,44 @@ MotorWheel wheel4(10, 7, 18, 19, &irq4);
 Omni4WD Omni(&wheel1, &wheel2, &wheel3, &wheel4);
 
 void setup() {
-  //TCCR0B=TCCR0B&0xf8|0x01;    // warning!! it will change millis()
+  TCCR0B=TCCR0B&0xf8|0x01;    // warning!! it will change millis()
   TCCR1B = TCCR1B & 0xf8 | 0x01; // Pin9,Pin10 PWM 31250Hz
-  TCCR2B = TCCR2B & 0xf8 | 0x01; // Pin3,Pin11 PWM 31250Hz
+  //TCCR2B = TCCR2B & 0xf8 | 0x01; // Pin3,Pin11 PWM 31250Hz
 
   Omni.PIDEnable(0.31, 0.01, 0, 10);
 }
 
 void setSpeed(int speed){
-  Omni.wheelLLSetSpeedMMPS(speed);
+  Omni.setCarSpeedMMPS(speed, 100000);
 }
 
-void deplacement(string movement, int value){
-  Omni.setCarAdvance(value);
+void deplacement(String movement, int value){
+  if(movement="AVANT"){
+    Omni.setCarAdvance(value);
+    Omni.delayMS(1000);
+    Omni.setCarStop();
+  }
+  else if(movement="ARRIERE"){
+    Omni.setCarBackoff(value);
+    Omni.delayMS(1000);
+    Omni.setCarStop();
+  }
+  else if(movement="GAUCHE"){
+    float rad = (value * PI) / 180;
+    Omni.setCarRotate(SPEED_ROT);
+    Omni.delayMS(1000*rad/SPEED_ROT);
+    Omni.setCarStop();
+  }
+  else if(movement="DROITE"){
+    float rad = (value * PI) / 180;
+    Omni.setCarRotate(SPEED_ROT);
+    Omni.delayMS(1000*rad/SPEED_ROT);
+    Omni.setCarStop();
+  }
+}
+
+void rotate(int value){
+  Omni.delayMS(value);
 }
 
 double distanceCaptor(int unite){
@@ -75,5 +101,5 @@ double distanceCaptor(int unite){
 }
 
 void loop() {
-  main();
+  mainCode();
 }

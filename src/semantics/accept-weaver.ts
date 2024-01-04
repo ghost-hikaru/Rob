@@ -1,8 +1,7 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
 import type { RobAstType } from '../language/generated/ast.js';
 import * as InterfaceAST from '../language/generated/ast.js';
-import * as ClassAST from './visitorNode.js';
-import { AssignationVisitor, BinaryExpressionVisitor, BlockVisitor, CM, ClockNode, ConstInt, ConstantBooleanVisitor, DeplacementVisitor, DistanceCaptor, IfNode, MM, ProcCallVisitor, ProcDeclarationVisitor, RepeatVisitor, ReturnVisitor, RobotMLVisitor, SpeedNode, ValCallVisitor, VarDeclarationVisitor } from './visitorNode.js';
+import { AssignationVisitor, BinaryExpressionVisitor, BlockVisitor, CM, ClockNode, ConstInt, ConstantBooleanVisitor, DeplacementVisitor, DistanceCaptor, IfNode, MM, ProcCallVisitor, ProcDeclarationVisitor, RepeatVisitor, ReturnVisitor, RobotMLVisitor, RobotVisitor, SpeedNode, ValCallVisitor, VarDeclarationVisitor } from './visitorNode.js';
 import type { RobServices } from '../language/rob-module.js';
 /**
  * Register custom validation checks.
@@ -21,7 +20,7 @@ export function weaveAcceptMethods(services: RobServices) {
  */
 export class RoboMlAcceptWeaver {
    weaveRobot(node : InterfaceAST.Robot, accept : ValidationAcceptor) : void{
-        (<any> node).accept = (visitor: RobotMLVisitor) => {return visitor.visitRobot(node as unknown as ClassAST.RobotVisitor);}
+        (<any> node).accept = (visitor: RobotMLVisitor) => {return visitor.visitRobot(node as unknown as RobotVisitor);}
     }
 
     weaveProcDeclaration(node : InterfaceAST.ProcDeclaration, accept : ValidationAcceptor) : void{
