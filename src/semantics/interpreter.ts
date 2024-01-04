@@ -1,9 +1,9 @@
-import { InterpreterImplementation } from "./interpreterVisitor.js";
+import { InterpreterImplementation, Statment } from "./interpreterVisitor.js";
 import { RobotVisitor } from "./visitorNode.js";
 
 export class interpreter {
-    static interpretRobot(robot: RobotVisitor): void {
+    static interpretRobot(robot: RobotVisitor): Statment[] {
         let robotVisitor = new InterpreterImplementation();
-        console.log(robotVisitor.visitRobot(robot));
+        return robotVisitor.visitRobot(robot);
     }
 }

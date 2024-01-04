@@ -7,6 +7,7 @@
 #include <MotorWheel.h>
 #include <Omni4WD.h>
 
+#define SPEED_ROT PI/2
 //#include <fuzzy_table.h>
 //#include <PID_Beta6.h>
 
@@ -63,11 +64,36 @@ void setup() {
 }
 
 void setSpeed(int speed){
-  Omni.wheelLLSetSpeedMMPS(speed);
+  Omni.setCarSpeedMMPS(speed, 100000);
 }
 
 void deplacement(String movement, int value){
-  Omni.setCarAdvance(value);
+  if(movement="AVANT"){
+    Omni.setCarAdvance(value);
+    Omni.delayMS(1000);
+    Omni.setCarStop();
+  }
+  else if(movement="ARRIERE"){
+    Omni.setCarBackoff(value);
+    Omni.delayMS(1000);
+    Omni.setCarStop();
+  }
+  else if(movement="GAUCHE"){
+    float rad = (value * PI) / 180;
+    Omni.setCarRotate(SPEED_ROT);
+    Omni.delayMS(1000*rad/SPEED_ROT);
+    Omni.setCarStop();
+  }
+  else if(movement="DROITE"){
+    float rad = (value * PI) / 180;
+    Omni.setCarRotate(SPEED_ROT);
+    Omni.delayMS(1000*rad/SPEED_ROT);
+    Omni.setCarStop();
+  }
+}
+
+void rotate(int value){
+  Omni.delayMS(value);
 }
 
 double distanceCaptor(int unite){
@@ -78,39 +104,28 @@ void loop() {
   mainCode();
 }
 
-int procedure(int Melvin, bool Enzo) {
-if(Melvin > Enzo && Melvin == 2 && Melvin < 10) {
-int Distance = 80;
-Distance = Distance + 3;
-print(Distance);
+void square() {
+deplacement(AVANT,150** 0.01);
 
-}
-else {
-int Distance = 78;
-Distance = Distance + 3;
-print(Distance);
+rotate(9000);
 
-}
+deplacement(GAUCHE,150** 0.01);
 
-while(Melvin < 10) {
-print(Melvin);
-Melvin = Melvin + 1;
+rotate(9000);
 
-}
+deplacement(DROITE,150** 0.01);
+
+rotate(9000);
+
+deplacement(ARRIERE,150** 0.01);
+
+rotate(9000);
 }
 void mainCode() {
-int testReturn = Un() + Deux();
-deplacement(AVANT,10** 0.01);
+int count = 0;
+while(count < 5) {
+count = count + 1;
+square();
 
-print(testReturn);}
-int Un() {
-int test = 10;
-bool test2 = true;
-print(test);
-return 1;
 }
-int Deux() {
-return 2;
-}
-void print() {
 }
