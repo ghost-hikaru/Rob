@@ -27,7 +27,7 @@ Il est évidemment possible de déclarer des variables dans le langage grâce à
 ![RepresentationDiagramme](./robML.jpeg)
 
 # II/ Langium
-Après avoir créer le modèle du langage, on exporte la grammaire générée via en langium afin de continuer le développement sur VSCode en TypeScript/JavaScript. On redéfinit ensuite la grammaire afin de la faire correspondre à notre idée du langage. Celle-ci se trouve dans les fichiers rob.langium et robML-types.langium dans le dossier src.
+Après avoir créer le modèle du langage, on exporte la grammaire générée via Xtext en langium afin de continuer le développement sur VSCode en TypeScript/JavaScript. On redéfinit ensuite la grammaire afin de la faire correspondre à notre idée du langage. Celle-ci se trouve dans les fichiers rob.langium et robML-types.langium dans le dossier src.
 
 # III/ Visiteur et weaver
 Pour accomplir les deux objectifs, il a d'abord fallu créer une classe pour représenter une structure syntaxique abstraite (AST) et une hiérarchie d'objet à partir des objets générés précédemment. C'est ce qui est fait dans le fichier visitorNode.ts au sein du dossier semantics. Dans ce fichier, on définit une interface RobotMLVisitor pour un visiteur qui peut être utilisé pour parcourir et effectuer des actions sur les différents nœuds de l'AST. Chaque classe de visiteur (comme RobotVisitor, ProcDeclarationVisitor, etc.) correspond à un type spécifique de nœud dans l'AST. Ces classes héritent des interfaces générées à partir de notre AST. Chaque classe de visiteur implémente une méthode accept qui prend un visiteur en paramètre. Cette méthode appelle la méthode spécifique du visiteur pour le nœud actuel, permettant ainsi de déléguer le traitement à la méthode appropriée du visiteur. Les classes de visiteur contiennent des propriétés qui représentent les différentes parties des nœuds de l'AST. Par exemple, la classe ProcDeclarationVisitor a des propriétés telles que name, returnedType, et block qui représentent les composants d'une déclaration de fonction. Certains nœuds, comme Reference&lt;VarDeclarationVisitor&gt;, utilisent des références pour établir des liens entre différentes parties de l'AST. 
@@ -47,6 +47,7 @@ Les boutons au dessus de l'éditeur ont également été implémenté. Cependant
 ## 🛠️ Tech Stack
 - [Ecore](https://eclipse.dev/modeling/emf/)
 - [Langium](https://langium.org/)
+- [Xtext](https://eclipse.dev/Xtext/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [JavaScript](https://developer.mozilla.org/fr/docs/Web/JavaScript)
 
