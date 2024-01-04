@@ -25,6 +25,11 @@ function draw() {
   if(window.p5robot !== null){
     window.p5robot.show();
   }
+
+  tab = window.p5robot.tableau_position;
+  for(let i = 0;i<tab.length;i++){
+    point(tab[i].x,tab[i].y);
+  }
 }
 
 function updateRobot(){

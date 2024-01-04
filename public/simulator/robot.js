@@ -7,6 +7,7 @@ class Robot {
         this.angle = _angle;
         this.width = _width;
         this.height = _height;
+        this.tableau_position = [{x:this.x,y:this.y}];
     }
   
     show() {
@@ -38,8 +39,13 @@ class Robot {
     move(dist){
         let anglecos = cos(this.angle);
         let anglesin = sin(this.angle);
-        this.x += anglecos*dist;
-        this.y += anglesin*dist;
+        for(let i = 0; i < dist;i++){
+
+            this.x += anglecos;
+            this.y += anglesin;
+            this.tableau_position.push({x:this.x,y:this.y});
+    
+        }
     }
 
     side(dist){

@@ -54,14 +54,37 @@ const typecheck = (async () => {
 });
 
 const parseAndValidate = (async () => {
-    console.info('validating current code...');
-    // To implement
+    let tableau_error = [/*{error:"syntaxe", message:"Veuillez verifier le ; à la ligne 5"}*/];
+    let messageValidate;
+
+    if(tableau_error.length > 0){
+        messageValidate = "Code non valide - Veuillez voir les erreurs";
+    }else{
+        messageValidate = "Code valide - prêt à l'éxécution";
+    }
+
+    //let validModalBody = document.getElementsByTagName("h1")[0];//document.getElementById("validModal").getElementsByClassName("modal-body")[0];
+
+    // Modifiez le texte du corps de la modale de validation
+    validModalBody.textContent = messageValidate;
+    console.log(messageValidate);
+    
+});
+
+const resetSimulation = (async () => {
+    window.setup();   
+});
+
+const reset = (async () => {
+    client.getEditor().getModel()?.setValue("");
+    window.setup();
 });
 
 const execute = (async () => {
     console.info('running current code...');
     client.getLanguageClient().sendNotification('browser/execute', { content: client.getEditor().getModel().getValue() });
 });
+
 
 const setupSimulator = (scene) => {
     console.log("Scene : ",scene);
@@ -102,6 +125,9 @@ const setupSimulator = (scene) => {
 window.execute = execute;
 window.typecheck = typecheck;
 //window.setup = setupSimulator;
+window.resetSimulation = resetSimulation;
+window.parseAndValidate = parseAndValidate;
+window.reset = reset;
 
 var errorModal = document.getElementById("errorModal");
 var validModal = document.getElementById("validModal");
