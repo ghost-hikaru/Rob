@@ -43,21 +43,21 @@ Dans la partie interpréteur, servant à interpréter et simuler le code dans un
 
 # VI/ Editeur
 
-Après avoir suivi le [tutoriel](https://langium.org/tutorials/langium_and_monaco/) donné dans la documentation, l'éditeur en ligne (en utilisant monaco) a été implémenté et peut être utilisé en rentrant les commandes écrites dans le fichier interpreter.bat (Pour windows) ou le script run.sh. Parmis celle-ci se trouve une commande interpret écrite dans le main.ts situé dans le dossier src/cli permettant de lancer une méthode asynchrone pour prendre le nom du fichier en paramètre, créer les services nécessaires pour notre langage (createRobServices(NodeFileSystem)) avant d'extraire le modèle AST Abstract Syntax Tree) à partir du fichier source (extractAstNode&lt;RobotVisitor&gt;(fileName, services)) puis d'appeler la méthode statique interpretRobot permettant d'appeler le visiteur de l'interpreter.
+Après avoir suivi le [tutoriel](https://langium.org/tutorials/langium_and_monaco/) donné dans la documentation, l'éditeur en ligne (en utilisant monaco) a été implémenté et peut être utilisé en rentrant les commandes écrites dans le fichier interpreter.bat (Pour windows) ou le script run.sh. Parmis celles-ci se trouve une commande interpret écrite dans le main.ts située dans le dossier src/cli permettant de lancer une méthode asynchrone pour prendre le nom du fichier en paramètre, créer les services nécessaires pour notre langage (createRobServices(NodeFileSystem)) avant d'extraire le modèle AST Abstract Syntax Tree) à partir du fichier source (extractAstNode&lt;RobotVisitor&gt;(fileName, services)) puis d'appeler la méthode statique interpretRobot permettant d'appeler le visiteur de l'interpreter.
 
 ![Editeur](./assets/monaco.png)
 
-Voici à quoi ressemble notre éditeur. Nous pouvons le découper en 3 zones :
-- L'éditeur lui-même avec sa zone de texte. Permet à l'utilisateurs de rentré le code qu'il veut dans le langage que l'on vient de créer.
-- Le simulateur qui se trouve à droite. Cette partie sert à simuler le code que l'utilisateurs aura écrit dans la partie de gauche.
-- Les boutons d'actions qui se trouvent au dessus. Ils sont au nombres de 4 avec chacun sa fonctionnalités. Dans la version seule 3 des 4 boutons ont réussi à être implémentés.
-    - "Parse and Validate" : Ce bouton qui est celui qui nest pas implémenté, devait parcourir le code écrit par l'utilisateur afin de vérifier que celui-ci est correct à la syntaxe et la grammaire de notre langage. Dans le cas où sa ne l'était pas une modale s'ouvrirait afin de dire qu'elles sont les erreurs et sur quelle lignes. Dans le cas contraire si les informations sont corrects, alors une modale apparait afin d'informer l'utilisateur que le code est bien écrit et qu'il peut l'éxecuter.
-    - "Execute Simulation" : Ce bouton permet de venir executer le code rentré par l'utilisateur et de le simuler dans la partie de droite.
-    Avec plus de temps, il aurait été judicieux je pense de mettre une sécurité entre les 2 premiers boutons et faire en sorte d'activer le bouton "Execute simulation" que si le code est valide.
-    - "Restart simulation" : Ce bouton permet tout simplement de remettre la partie simulation dans son état initial (c'est à dire remmetre le robot au milieu) mais ne touche pas au code.
-    - "Clear data" : Ce dernier bouton sert à effacer complètement le code écrit par l'utilisateurs mais également remet la simulation à 0.
+Voici à quoi ressemble notre éditeur. Nous pouvons le découper en trois zones :
+- L'éditeur lui-même, avec sa zone de texte. Cette zone permet à l'utilisateur de rentrer le code qu'il veut dans le langage que l'on vient de créer.
+- Le simulateur, qui se trouve à droite. Cette partie sert à simuler le code que l'utilisateur aura écrit dans la partie de gauche.
+- Les boutons d'actions, qui se trouvent au dessus. Ils sont au nombre de quatre avec chacun sa fonctionnalité. Dans notre version, seulement trois des quatre boutons ont réussi à être implémentés.
+    - "Parse and Validate" : Ce bouton, qui n'est pas implémenté, devait parcourir le code écrit par l'utilisateur afin de vérifier que celui-ci est correct par rapport à la syntaxe et à la grammaire de notre langage. Dans le cas où ça ne l'était pas, une modale s'ouvrirait afin de dire quelles sont les erreurs et sur quelles lignes. Dans le cas contraire, si les informations sont correctes, alors une modale apparaîtrait afin d'informer l'utilisateur que le code est bien écrit et qu'il peut l'exécuter.
+    - "Execute Simulation" : Ce bouton permet d'exécuter le code rentré par l'utilisateur et de le simuler dans la partie de droite.
+    Avec plus de temps, il aurait été judicieux de mettre une sécurité entre les deux premiers boutons et faire en sorte d'activer le bouton "Execute simulation" que si le code est valide.
+    - "Restart simulation" : Ce bouton permet tout simplement de remettre la partie simulation dans son état initial (c'est-à-dire remettre le robot au milieu) mais ne touche pas au code.
+    - "Clear data" : Ce dernier bouton sert à effacer complètement le code écrit par l'utilisateur mais également remet la simulation à 0.
 
-Cependant, un problème lors de la communication avec les weavers lors de l'interprétation depuis l'éditeur font que le code écrit par l'utilisateurs n'est pas pris en compte et les robot ne se déplace pas sur l'écran malgré le fait que l'interprétation est effectuée. 
+Cependant, un problème lors de la communication avec les weavers lors de l'interprétation depuis l'éditeur fait que le code écrit par l'utilisateur n'est pas pris en compte et le robot ne se déplace pas sur l'écran malgré le fait que l'interprétation soit effectuée. 
 
 ## 🛠️ Tech Stack
 - [Ecore](https://eclipse.dev/modeling/emf/)
