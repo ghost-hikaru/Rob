@@ -51,7 +51,11 @@ Voici à quoi ressemble notre éditeur. Nous pouvons le découper en trois zones
 - L'éditeur lui-même, avec sa zone de texte. Cette zone permet à l'utilisateur de rentrer le code qu'il veut dans le langage que l'on vient de créer.
 - Le simulateur, qui se trouve à droite. Cette partie sert à simuler le code que l'utilisateur aura écrit dans la partie de gauche.
 - Les boutons d'actions, qui se trouvent au dessus. Ils sont au nombre de quatre avec chacun sa fonctionnalité. Dans notre version, seulement trois des quatre boutons ont réussi à être implémentés.
-    - "Parse and Validate" : Ce bouton, qui n'est pas implémenté, devait parcourir le code écrit par l'utilisateur afin de vérifier que celui-ci est correct par rapport à la syntaxe et à la grammaire de notre langage. Dans le cas où ça ne l'était pas, une modale s'ouvrirait afin de dire quelles sont les erreurs et sur quelles lignes. Dans le cas contraire, si les informations sont correctes, alors une modale apparaîtrait afin d'informer l'utilisateur que le code est bien écrit et qu'il peut l'exécuter.
+    - "Parse and Validate" : Ce bouton, parcours le code écrit par l'utilisateur afin de vérifier que celui-ci est correct par rapport à la syntaxe et à la grammaire de notre langage. Dans le cas où ça ne l'est pas, une modale s'ouvre afin de dire quelles sont les erreurs et sur quelles lignes. Dans le cas contraire, si les informations sont correctes, alors une modale apparait afin d'informer l'utilisateur que le code est bien écrit et qu'il peut l'exécuter.
+    Voici la modale en question :
+    ![nonValideCode](./assets/valide.png)
+    Le parcours du code n'est pas fonctionnelle mais l'idée était de parcourir le code et de le vérifier à l'aide de validateurs et de retourner en cas d'erreur le type d'erreur et un message pour le résoudre. Voici un exemple d'une modale en cas de code non valide :
+    ![nonValideCode](./assets/nonvalide.png)
     - "Execute Simulation" : Ce bouton permet d'exécuter le code rentré par l'utilisateur et de le simuler dans la partie de droite.
     Avec plus de temps, il aurait été judicieux de mettre une sécurité entre les deux premiers boutons et faire en sorte d'activer le bouton "Execute simulation" que si le code est valide.
     - "Restart simulation" : Ce bouton permet tout simplement de remettre la partie simulation dans son état initial (c'est-à-dire remettre le robot au milieu) mais ne touche pas au code.

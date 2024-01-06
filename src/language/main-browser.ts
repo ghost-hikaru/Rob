@@ -39,7 +39,6 @@ shared.workspace.DocumentBuilder.onBuildPhase(DocumentState.Validated, documents
         // this is safe so long as you careful to not clobber existing properties
         // and is incredibly helpful to enrich the feedback you get from the LS per document
         (model as unknown as {$commands: Statment[]}).$commands = json;
-        console.log("hello")
         // send the notification for this validated document,
         // with the serialized AST + generated commands as the content
         connection.sendNotification(documentChangeNotification, {
@@ -51,13 +50,15 @@ shared.workspace.DocumentBuilder.onBuildPhase(DocumentState.Validated, documents
 });
 
 connection.onNotification('browser/execute', params => {
-    console.log("received execute notification");
-    console.log(params);
-    //const program = params.content;
-    //const parseResult = shared.workspace.LangiumDocumentFactory.fromString<RobotVisitor>(program, URI.parse("memory://Rob.document"));
-    console.log("starting interpretation");
+    /**
+     * Permet de récupérer le code à executer de l'utilisateur - Non fonctionnel
+     * 
+     * const program = params.content;
+     * const parseResult = shared.workspace.LangiumDocumentFactory.fromString<RobotVisitor>(program, URI.parse("memory://Rob.document"));
+     * const statements2 = interpreter.interpretRobot(parseResult.parseResult.value as RobotVisitor);
+    */
+    
     weaveAcceptMethods(Rob);
-    console.log("After the weave")
     const statements = [
         { type: 'Forward', Value: 100 },
         { type: 'Rotate', Value: (300 as Number) },
@@ -65,9 +66,8 @@ connection.onNotification('browser/execute', params => {
         { type: 'Rotate', Value: (300 as Number) },
         { type: 'Forward', Value: 100 },
         { type: 'Rotate', Value: (300 as Number) }
-      ]
-    //const statements2 = interpreter.interpretRobot(parseResult.parseResult.value as RobotVisitor);
-    //console.log("le deux" + statements2);
+    ]
+    
     console.log(statements);
     connection.sendNotification('browser/sendStatements', statements);
 });
