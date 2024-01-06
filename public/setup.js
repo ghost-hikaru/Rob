@@ -97,8 +97,23 @@ const reset = (async () => {
 });
 
 const execute = (async () => {
-    console.info('running current code...');
     client.getLanguageClient().sendNotification('browser/execute', { content: client.getEditor().getModel().getValue() });
+    client.getLanguageClient().onNotification('browser/sendStatements', async (params) => {
+        //console.log(params);
+        for (let i = 0; i < params.length; i++) {
+            const statement = params[i];
+            if (statement.type === "AVANT") {
+                await window.p5robot.move(statement.Value);
+            }
+    
+            if (statement.type === "GAUCHE") {
+                console.log(statement.Value);
+                window.p5robot.turn(statement.Value * 1);
+            }
+            await new Promise(r => setTimeout(r, 1000));
+        }
+    
+    });
 });
 
 
@@ -176,19 +191,4 @@ client.setWorker(lsWorker);
 // keep a reference to a promise for when the editor is finished starting, we'll use this to setup the canvas on load
 const startingPromise = client.startEditor(document.getElementById("monaco-editor-root"));
 
-client.getLanguageClient().onNotification('browser/sendStatements', async (params) => {
-    console.log(params);
-    for (let i = 0; i < params.length; i++) {
-        const statement = params[i];
-        if (statement.type === "AVANT") {
-            await window.p5robot.move(statement.Value);
-        }
 
-        if (statement.type === "GAUCHE") {
-            console.log(statement.Value);
-            window.p5robot.turn(statement.Value * 1);
-        }
-        await new Promise(r => setTimeout(r, 1000));
-    }
-
-});
