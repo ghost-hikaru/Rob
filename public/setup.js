@@ -54,21 +54,37 @@ const typecheck = (async () => {
 });
 
 const parseAndValidate = (async () => {
-    let tableau_error = [/*{error:"syntaxe", message:"Veuillez verifier le ; à la ligne 5"}*/];
+    let tableau_error = [/*{error:"syntaxe", message:"Veuillez verifier le ; à la ligne 5"},{error:"grammar", message:"Mauvaise déclaration de fonction"}*/];
     let messageValidate;
 
+    //Code à parser et valider
+    let code = client.getEditor().getModel()?.getValue();
+
     if(tableau_error.length > 0){
-        messageValidate = "Code non valide - Veuillez voir les erreurs";
+        messageValidate = "Code non valide - Veuillez voir les erreurs et les corriger afin de pouvoir simuler le robot\n\n";
+        var modalBody = document.querySelector("#errorModal .modal-body");
+        modalBody.innerText = messageValidate;
+
+        tableau_error.forEach(function (errorObject) {
+            // Accédez aux propriétés de chaque objet
+            var errorType = errorObject.error;
+            var errorMessage = errorObject.message;
+
+            // Concaténation correcte des chaînes de caractères avec le message d'erreur
+            modalBody.innerText += "Type d'erreur : " + errorType + ", Message : " + errorMessage + "\n";
+        });
+        
+
+        let nonValidModalBody = document.getElementById("errorModal");
+        nonValidModalBody.style.display = "block";
     }else{
         messageValidate = "Code valide - prêt à l'éxécution";
+        var modalBody = document.querySelector("#validModal .modal-body");
+        modalBody.innerText = messageValidate;
+
+        let validModalBody = document.getElementById("validModal");
+        validModalBody.style.display = "block";
     }
-
-    //let validModalBody = document.getElementsByTagName("h1")[0];//document.getElementById("validModal").getElementsByClassName("modal-body")[0];
-
-    // Modifiez le texte du corps de la modale de validation
-    validModalBody.textContent = messageValidate;
-    console.log(messageValidate);
-    
 });
 
 const resetSimulation = (async () => {
@@ -81,8 +97,23 @@ const reset = (async () => {
 });
 
 const execute = (async () => {
-    console.info('running current code...');
     client.getLanguageClient().sendNotification('browser/execute', { content: client.getEditor().getModel().getValue() });
+    client.getLanguageClient().onNotification('browser/sendStatements', async (params) => {
+        //console.log(params);
+        for (let i = 0; i < params.length; i++) {
+            const statement = params[i];
+            if (statement.type === "AVANT") {
+                await window.p5robot.move(statement.Value);
+            }
+    
+            if (statement.type === "GAUCHE") {
+                console.log(statement.Value);
+                window.p5robot.turn(statement.Value * 1);
+            }
+            await new Promise(r => setTimeout(r, 1000));
+        }
+    
+    });
 });
 
 
@@ -160,19 +191,4 @@ client.setWorker(lsWorker);
 // keep a reference to a promise for when the editor is finished starting, we'll use this to setup the canvas on load
 const startingPromise = client.startEditor(document.getElementById("monaco-editor-root"));
 
-client.getLanguageClient().onNotification('browser/sendStatements', async (params) => {
-    console.log(params);
-    for (let i = 0; i < params.length; i++) {
-        const statement = params[i];
-        if (statement.type === "AVANT") {
-            await window.p5robot.move(statement.Value);
-        }
 
-        if (statement.type === "GAUCHE") {
-            console.log(statement.Value);
-            window.p5robot.turn(statement.Value * 1);
-        }
-        await new Promise(r => setTimeout(r, 1000));
-    }
-
-});
